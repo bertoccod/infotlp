@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Inserisci Smartphone</title>
+  <link rel="stylesheet" href="form_tlp.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <nav class="menu">
+    <ul>
+      <li><a href="home_tlp.html">📄 Visualizza Smartphone</a></li>
+      <li><a href="manage_tlp.html">🛠️ Manutenzione</a></li>
+      <li><a href="index.html">🔙 Home</a></li>
+    </ul>
+  </nav>
+
+  <h2>📝 Inserisci nuovo Smartphone</h2>
+
+  <form id="smartphoneForm">
+    <div>
+      <label>Marca</label>
+      <select name="marca"></select>
+    </div>
+
+    <div>
+      <label>Nome</label>
+      <input type="text" name="nome">
+    </div>
+    <div>
+      <label>Brand</label>
+      <select name="brand"></select>
+    </div>
+    <div>
+      <label>Pollici</label>
+      <input type="text" name="pollici" step="any"></select>
+    </div>
+
+    <div>
+      <label>CPU</label>
+      <input type="text" name="cpu"></input>
+    </div>
+    <div>
+      <label>Gruppo</label>
+      <select name="gruppo"></select>
+    </div>
+    <div>
+      <label>RAM</label>
+      <select name="ram"></select>
+    </div>
+
+    <div>
+      <label>SSD</label>
+      <select name="ssd"></select>
+    </div>
+    <div>
+      <label>5G</label>
+      <select name="5G"><option>SI</option><option selected>NO</option></select>
+    </div>
+    <div>
+      <label>Front</label>
+      <input type="text" name="front"></select>
+    </div>
+    <div>
+      <label>Back</label>
+      <input type="text" name="back"></select>
+    </div>
+    <div>
+      <label>Volantino</label>
+      <select name="volantino"><option>SI</option><option selected>NO</option></select>
+    </div>
+
+    <div>
+      <label>X</label>
+      <select name="x"><option>SI</option><option selected>NO</option></select>
+    </div>
+    <div>
+      <label>Prezzo</label>
+      <input type="number" name="prezzo">
+    </div>
+
+    <div>
+      <label>Expo</label>
+      <select name="expo"><option>SI</option><option selected>NO</option></select>
+    </div>
+    <div>
+      <label>Ivrea no Expo</label>
+      <input type="number" name="ivrea">
+    </div>
+    <div class="full-width">
+      <label>Note</label>
+      <input type="text" name="note">
+    </div>
+
+
+    <button type="submit">💾 Salva</button>
+  </form>
+
+
+  <p id="statusMsg" style="margin-top:20px;"></p>
+
+  <script src="form_tlp.js"></script>
+</body>
+</html>

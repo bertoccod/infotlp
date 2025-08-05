@@ -1,0 +1,207 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 0px;
+  background-color: #f0f0f0;
+}
+/*--MENU--*/
+.menu {
+  background-color: #ffffff;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  max-width: 100%;
+}
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.menu li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.menu li a:hover {
+  color: #0077cc;
+}
+/*--FILTRI--*/
+.buttfiltri {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.griglia-filtri {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px 20px;
+  /*max-width: 100%;*/
+  width: 80vw;
+  margin: 0 auto;
+}
+.griglia-filtri label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+.griglia-filtri input,
+.griglia-filtri select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  font-size: 12px;
+}
+
+#filtriForm input[name="codice"] {
+  width: 100%;
+  max-width: 350px;
+}
+/*--TABELLA VISUALIZZAZIONE--*/
+.elenco{
+  width: 95vw;
+  border-collapse: separate;
+  box-sizing: border-box;
+  margin: 0 auto;
+  border-spacing: 0 5px;
+  font-size: 14px;
+}
+.inputprezzo{
+ width: 7ch;
+  text-align: center;
+}
+.inputgiacenze {
+ width: 3ch;
+  text-align: center;
+}
+.inputexpo{
+  width: 3ch;
+  text-align: center;
+  background-color: orange;
+}
+.elenco tr.riga-gialla {
+  background-color: #bcd4bb;
+  overflow: hidden;
+  height: 25px;
+}
+
+.elenco tr.riga-rosa {
+  background-color: #c9bbd4;
+  overflow: hidden;
+  height: 25px;
+}
+.rigaevid {
+  background-color: #e3ea72;
+  overflow: hidden;
+  height: 25px;
+}
+.elenco tr td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.elenco tr td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.updpricebt{
+  font-size: 18px;
+  /*background-color: #0077cc;
+  color: white;*/
+  border: none;
+  cursor: pointer;
+}
+
+.updpricebt:hover {
+    background-color: #005fa3;
+  }
+/*--OVERLAY MODIFICA--*/
+.overlay-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 800px;
+}
+#overlayModifica {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.griglia-edit {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.griglia-edit label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.edit-buttons {
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.edit-buttons button {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.full-width {
+  grid-column: span 4;
+}
+
+.full-width input {
+  width: 100%;
+}
+#filtriForm input[name="codice"] {
+  width: 100%;
+  max-width: 350px;
+}
+
+form button {
+  grid-column: span 3;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #005fa3;
+}
+
+.fastfiltero {
+  text-align: left;          /* allinea il contenuto a sinistra */
+  padding-left: 15px;        /* spazio interno a sinistra del contenitore */
+}
+
+.fastfiltero input {
+  margin-left: 0;            /* togli il margine extra sull'input */
+  padding-left: 15px;        /* spazio interno nel campo di input */
+  font-size: 14px;
+  width:10vw;
+  text-align: left;
+}

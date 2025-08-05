@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>📱💻 Catalogo dispositivi</title>
+  <link rel="stylesheet" href="index.css">
+  <!-- Firebase SDK compat -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+<!-- FORM DI LOGIN -->
+  <div id ="loginForm">
+    <h2>Accedi</h2>
+    <input type="email" id="email" placeholder="Email" required><br><br>
+    <input type="password" id="password" placeholder="Password" required><br><br>
+    <button onclick="login()">Login</button>
+    <p id="errorMessage" style="color: red;"></p>  
+  </div>
+<!-- APP DOPO LOGIN -->
+  <div id="app" style="display: none;">
+    <h1>Categorie</h1>
+    <nav class="menu">
+      <ul>
+        <li><button onclick="window.location.href='home_nbk.html'">Notebook</button></li>
+      </ul>
+      <ul>
+        <li><button onclick="window.location.href='home_tab.html'">Tablet</button></li>
+      </ul>
+      <ul>
+        <li><button onclick="window.location.href='home_tlp.html'">Smartphone</button></li>
+      </ul>
+      <ul>
+        <li><button class="esci" onclick="logout()">Logout</button></li>
+      </ul>
+    </nav>
+  </div>
+  <script src="index.js"></script>
+</body>
+</html>

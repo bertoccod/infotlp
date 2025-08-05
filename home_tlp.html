@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Smartphone</title>
+  <link rel="stylesheet" href="home.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+  <nav class="menu">
+    <ul>
+      <li><a href="home_nbk.html">Notebook</a></li>
+      <li><a href="home_tab.html">Tablet</a></li>
+      <li><a href="home_tlp.html">Smartphone</a></li>
+      <li><a href="index.html">🔙 Esci</a></li>
+    </ul>
+  </nav>
+  <nav class="menu">
+    <ul>
+      <li><a href="form_tlp.html">📄 Inserisci nuovo smartphone</a></li>
+      <li><a href="manage_tlp.html">🛠️ Manutenzione</a></li>
+    </ul>
+  </nav>
+  <button class="buttfiltri" onclick="toggleFiltri()">🔍 Mostra filtri</button>
+
+      <div id="sezioneFiltri" style="display:none; margin-top:20px;">
+        <form id="filtriForm">
+          <div class="griglia-filtri">
+            <div><label>Marca</label><select name="marca"></select></div>
+            <div><label>Nome</label><input type="text" name="nome"></input></div>
+            <div><label>Brand</label><select name="brand"></select></div>
+            <div><label>Pollici</label><input type="text" name="pollici"></input></div>
+            <div><label>CPU</label><input type="text" name="cpu"></input></div>
+            <div><label>Gruppo</label><select name="gruppo"></select></div>
+            <div><label>5G</label><select name="5G"><option></option><option>SI</option><option>NO</option></select></div>
+            <div><label>RAM</label><select name="ram"></select></div>
+            <div><label>SSD</label><select name="ssd"></select></div>
+            <div><label>Front</label><input type="number" name="front"></input></div>
+            <div><label>Back</label><input type="number" name="back"></input></div>
+            <div><label>Dual Sim</label><select name="dualsim"><option></option><option>SI</option><option>NO</option></select></div>
+            <div><label>Espandibile</label><select name="espandibile"><option></option><option>SI</option><option>NO</option></select></div>
+            <div><label>Volantino</label><select name="volantino"><option></option><option>SI</option><option>NO</option></select></div>
+            <div><label>X</label><select name="x"><option></option><option>SI</option><option>NO</option></select></div>
+            <div><label>Expo</label><select name="expo"><option></option><option>SI</option><option>NO</option></select></div>
+            <div><label>Prezzo minimo</label><input type="number" name="prezzoMin" step="any" min="0"></div>
+            <div><label>Prezzo massimo</label><input type="number" name="prezzoMax" step="any" min="0"></div>
+          </div>
+          <br>
+          <button class="buttfiltri" type="submit">🧮 Applica filtri</button>
+          <button class="buttfiltri" type="button" onclick="resetFiltri()">🔄 Reset</button>
+        </form>
+      </div>
+  <div class="fastfiltero">
+    <b>Nome:</b>
+    <input id="fastfilterinput" type="text" placeholder="Filtro veloce">    </input></div>
+  <div id="tabella"></div>
+    <div id="overlayModifica" class="overlay" style="display:none;">
+    <div class="overlay-content">
+      <h3>🛠️ Modifica Notebook</h3>
+      <form id="modificaForm">
+        <div class="griglia-edit">
+          <div><label>Marca</label><select name="marca" disabled></select></div>
+          <div><label>Brand</label><select name="brand" disabled></select></div>
+          <div><label>Nome</label><input type="text" name="nome" disabled></div>
+          <div><label>Pollici</label><input type="text" name="pollici" disabled></div>
+          <div><label>CPU</label><input type="text" name="cpu" disabled></input></div>
+          <div><label>Gruppo</label><select name="gruppo" disabled></select></div>
+          <div><label>5G</label><select name="5G" disabled></select></div>
+          <div><label>RAM</label><select name="ram" disabled></select></div>
+          <div><label>SSD</label><select name="ssd" disabled></select></div>
+          <div><label>Front Camera</label><input type="text" name="front" disabled></select></div>
+          <div><label>Back Camera</label><input type="text" name="back" disabled></select></div>
+          <div><label>DUAL SIM</label><select name="dualsim" disabled></select></div>
+          <div><label>ESPANDIBILE</label><select name="espandibile" disabled></select></div>
+          <div><label>Volantino</label><select name="volantino" disabled></select></div>
+          <div><label>X</label><select name="x" disabled></select></div>
+          <div><label>Prezzo</label><input type="number" name="prezzo" step="any" disabled></div>
+          <div><label>Expo</label><select name="expo" disabled></select></div>
+          <div><label>Ivrea</label><input type="text" name="ivrea" disabled></div>
+          <div class="full-width"><label>Note</label><input type="text" name="note" disabled></div>
+
+        </div>
+
+        <div class="edit-buttons">
+          <button type="button" id="btnModifica">✏️ Modifica</button>
+          <button type="submit" id="btnAggiorna">✅ Aggiorna</button>
+          <button type="button" id="btnElimina">🗑️ Elimina</button>
+          <button type="button" id="btnAnnulla">❌ Annulla</button>
+        </div>
+
+        <p id="msgStato" style="text-align:center;"></p>
+      </form>
+    </div>
+  </div>
+  <script src="home_tlp.js" defer></script>
+</body>
+
+</html>

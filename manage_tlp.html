@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Manutenzione Smartphone</title>
+  <link rel="stylesheet" href="manage.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <nav class="menu">
+    <ul>
+      <li><a href="home_nbk.html">Notebook</a></li>
+      <li><a href="home_tab.html">Tablet</a></li>
+      <li><a href="home_tlp.html">Smartphone</a></li>
+      <li><a href="index.html">🔙 Esci</a></li>
+    </ul>
+  </nav>
+
+  <div id="breadcrumb" class="breadcrumb">📌 Seleziona una sezione...</div>
+
+  <div class="container">
+    <div class="col" id="col1">
+      <h3>Categoria</h3>
+      <ul>
+        <li onclick="loadSubmenu('specs')">Specifiche</li>
+        <li onclick="loadSubmenu('warranty')">Garanzie</li>
+      </ul>
+    </div>
+    <div class="col" id="col2">
+      <h3>Dettagli</h3>
+      <ul id="submenu"></ul>
+    </div>
+    <div class="col" id="col3">
+      <h3>Form</h3>
+      <div id="formContainer"></div>
+    </div>
+  </div>
+
+  <script src="manage_tlp.js"></script>
+</body>
+</html>
