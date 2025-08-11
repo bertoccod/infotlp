@@ -1,0 +1,93 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 0px;
+  background-color: #f0f0f0;
+}
+/*--MENU--*/
+.menu {
+  background-color: #ffffff;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  max-width: 100%;
+}
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.menu li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.menu li a:hover {
+  color: #0077cc;
+}
+/*--FORM--*/
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left;
+}
+
+form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+form input,
+form select {
+  width: 90%;
+  padding: 5px;
+  font-size: 12px;
+}
+
+input[name="prezzo"] {
+  width: 12ch;
+}
+input[name="ivrea"], 
+input[name="sede"] 
+{
+  width: 8ch;
+}
+.full-width {
+  grid-column: span 4;
+}
+
+.full-width input {
+  width: 100%;
+}
+
+
+form button {
+  grid-column: span 4;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #005fa3;
+}
+
+#statusMsg {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
+}
