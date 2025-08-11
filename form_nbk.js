@@ -20,6 +20,16 @@ window.onload = () => {
     const snap = await db.collection("metadata_nbk").doc(campo).get();
     const valori = snap.data()?.values || [];
     const select = document.querySelector(`select[name="${campo}"]`);
+
+    // Aggiungi la voce iniziale "-- Nessuna selezione --"
+    const defaultOpt = document.createElement("option");
+    defaultOpt.value = "";
+    defaultOpt.textContent = "-- Nessuna selezione --";
+    defaultOpt.selected = true;
+    defaultOpt.disabled = true; // opzionale: impedisce la selezione dopo il primo click
+    select.appendChild(defaultOpt);
+
+    // Aggiungi le altre opzioni
     valori.forEach(v => {
       const opt = document.createElement("option");
       opt.value = v;
@@ -28,6 +38,7 @@ window.onload = () => {
     });
   });
 };
+
 
 // Invia il form
 document.getElementById("notebookForm").addEventListener("submit", async e => {
