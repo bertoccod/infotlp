@@ -10,7 +10,7 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const campiDaVisualizzare = ["codice", "marca", "nome", "pollici", "cpu", "generazione", "gpu", "ram", "ssd", "prezzo","location", "ivrea", "sede"];
+const campiDaVisualizzare = ["codice", "marca", "nome", "pollici", "cpu", "generazione", "gpu", "ram", "ssd", "prezzo", "ivrea", "sede"];
 let datiCorrenti = null;
 
 window.onload = function() {
@@ -199,7 +199,7 @@ async function mostraTabella(docs) {
       html += `<th>Garanzia</th><th>Totale</th>`;
     }
   }
-  html += `<th>Azioni</th></tr></thead><tbody>`;
+  html += `<th>Azioni</th><th>&#x2714</th></tr></thead><tbody>`;
 
   let ultimoGruppo = null;
   let usaGiallo = true;
@@ -228,7 +228,7 @@ async function mostraTabella(docs) {
       html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')"></td>`;
     }*/
     if (data.sel === "YES") {
-      html += `<tr class="rigaevid" data-classe="${classeRiga}">`;
+      html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
       html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')" checked></td>`;
     } else {
       html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
@@ -253,7 +253,11 @@ async function mostraTabella(docs) {
         }
 
         html += `<td>${garanzia !== "" ? garanzia.toFixed(2) : ""}</td>`;
-        html += `<td><b>${totale !== "" ? totale.toFixed(2) : ""}</b></td>`;
+        if (data.sel === "YES") {
+          html += `<td class="rigaevid"><b>${totale !== "" ? totale.toFixed(2) : ""}</b></td>`;
+        } else {
+          html += `<td><b>${totale !== "" ? totale.toFixed(2) : ""}</b></td>`;
+        }
       } else if (["ivrea"].includes(campo)){
         if (data.expo ==="SI"){
           html += `<td><input name="${campo}" value="${valore}" class="inputexpo"></td>`;
@@ -272,6 +276,11 @@ async function mostraTabella(docs) {
     }
 
     html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
+    if (data.check === "YES") {
+      html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')" checked></td>`;
+    } else {
+      html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')"></td>`;
+    }
     html += `</tr>`;
   }
 
@@ -313,20 +322,36 @@ async function calcolaGaranziaEsatta(marca, prezzoNotebook) {
 }
 
 //EVIDENZIA RIGA
-function evidenzia(checkbox, idDoc) {
-  const riga = checkbox.parentNode.parentNode;
-  const classeOriginale = riga.getAttribute("data-classe");
+  function evidenzia(checkbox, idDoc) {
+    const riga = checkbox.parentNode.parentNode;
+    const cellaDaEvidenziare = riga.cells[12]; // Cambia l'indice per scegliere la colonna
 
+    const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
+
+    if (checkbox.checked) {
+      cellaDaEvidenziare.classList.remove("riga-gialla", "riga-rosa");
+      cellaDaEvidenziare.classList.add("rigaevid");
+      db.collection("nbk").doc(idDoc).update({ sel: "YES" });
+    } else {
+      cellaDaEvidenziare.classList.remove("rigaevid");
+      if (classeOriginale) {
+        cellaDaEvidenziare.classList.add(classeOriginale);
+      }
+      db.collection("nbk").doc(idDoc).update({ sel: "NO" });
+    }
+  }
+
+
+//SPUNTALO
+function spuntalo(checkbox, idDoc) {
+  const riga = checkbox.parentNode.parentNode;
   if (checkbox.checked) {
-    riga.classList.remove("riga-gialla", "riga-rosa");
-    riga.classList.add("rigaevid");
-    db.collection("nbk").doc(idDoc).update({ sel: "YES" });
+    db.collection("nbk").doc(idDoc).update({ check: "YES" });
   } else {
-    riga.classList.remove("rigaevid");
-    riga.classList.add(classeOriginale);
-    db.collection("nbk").doc(idDoc).update({ sel: "NO" });
+    db.collection("nbk").doc(idDoc).update({ check: "NO" });
   }
 }
+
 
 
 
@@ -452,5 +477,35 @@ function fastfilter() {
   // Imposta solo il filtro codice, gli altri restano vuoti
   visualizzaNotebook({ codice: valoreCodice });
 }
+
+  let filtroIvreaAttivo = false;
+
+  function pronti() {
+    filtroIvreaAttivo = !filtroIvreaAttivo;
+    
+    const bottone = document.getElementById("btnFiltroIvrea");
+    bottone.textContent = filtroIvreaAttivo ? "🔍 Mostra tutti" : "🔍 Nbk Imballo chiuso";
+    
+    db.collection("nbk")
+      .orderBy("gruppo", "asc")
+      .get()
+      .then(snapshot => {
+        let docs = snapshot.docs;
+
+        if (filtroIvreaAttivo) {
+          docs = docs.filter(doc => {
+            const valore = parseFloat(doc.data().ivrea) || 0;
+            return valore > 0;
+          });
+        }
+
+        mostraTabella(docs);
+      })
+      .catch(err => {
+        console.error("❌ Errore nel toggle Ivrea:", err.message);
+      });
+  }
+
+
 
 
