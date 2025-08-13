@@ -25,6 +25,10 @@
       <li><a href="manage_tab.html">🛠️ Manutenzione</a></li>
     </ul>
   </nav>
+  <div class="fastfiltero">
+    <b>Codice AS400:</b>
+    <input id="fastfilterinput" type="text" placeholder="Filtro veloce">    </input>
+  </div>
   <div id="tabella"></div>
     <div id="overlayModifica" class="overlay" style="display:none;">
     <div class="overlay-content">
@@ -34,18 +38,19 @@
           <div><label>Codice</label><input type="text" name="codice" disabled></div>
           <div><label>Marca</label><select name="marca" disabled></select></div>
           <div><label>Nome</label><input type="text" name="nome" disabled></div>
-          <div><label>Nome</label><select name="tipo" disabled></div>
           <div><label>Pollici</label><select name="pollici" disabled></select></div>
+          <div><label>Tipo</label><select name="tipo" disabled></select></div>       
           <div><label>RAM</label><select name="ram" disabled></select></div>
           <div><label>SSD</label><select name="ssd" disabled></select></div>
-          <div><label>Volantino</label><select name="volantino" disabled><option></option><option>SI</option><option>NO</option></select></div>
-          <div><label>X</label><select name="x" disabled><option></option><option>SI</option><option>NO</option></select></div>
+          <div><label>Volantino</label><select name="volantino" disabled></select></div>
+          <div><label>X</label><select name="x" disabled></select></div>
           <div><label>Prezzo</label><input type="number" name="prezzo" step="any" disabled></div>
-          <div><label>Expo</label><select name="expo" disabled><option></option><option>SI</option><option>NO</option></select></div>
+          <div><label>Expo</label><select name="expo" disabled></select></div>
           <div><label>Ivrea</label><input type="text" name="ivrea" disabled></div>
           <div><label>Sede</label><input type="text" name="sede" disabled></div>
           <div class="full-width"><label>Link</label><input type="text" name="link" disabled></div>
           <div class="full-width"><label>Note</label><input type="text" name="note" disabled></div>
+          
         </div>
 
         <div class="edit-buttons">
@@ -61,4 +66,5 @@
   </div>
   <script src="home_tab.js" defer></script>
 </body>
+
 </html>
