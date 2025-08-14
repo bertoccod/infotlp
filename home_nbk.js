@@ -159,6 +159,13 @@ function visualizzaNotebook(filtri = {}) {
         if (filtri.prezzoMin && d.prezzo < Number(filtri.prezzoMin)) return false;
         if (FtMaxVal && RealMaxVal > FtMaxVal) return false;
         
+        // Filtro veloce gruppi
+        if (filtri.gruppi && filtri.gruppi.length > 0) {
+            if (!filtri.gruppi.includes(d.gruppo)) {
+                return false;
+            }
+        }
+
 
         // 🔎 Codice contiene
         if (filtri.codice && !((d.codice || "").toLowerCase().includes(filtri.codice.toLowerCase()))) return false;
@@ -178,100 +185,6 @@ function visualizzaNotebook(filtri = {}) {
     });
 }
 
-/* ex mostra tabella
-async function mostraTabella(docs) {
-  let html = `<table class="elenco"><thead><tr>`;
-
-  // Intestazione con aggiunta di Garanzia e Totale dopo Prezzo
-  html+='<th>Selez.</th>'
-  for (const campo of campiDaVisualizzare) {
-    html += `<th>${campo}</th>`;
-    if (campo === "prezzo") {
-      html += `<th>Garanzia</th><th>Totale</th>`;
-    }
-  }
-  html += `<th>Azioni</th><th>&#x2714</th></tr></thead><tbody>`;
-
-  let ultimoGruppo = null;
-  let usaGiallo = true;
-
-  for (const doc of docs) {
-    const data = doc.data();
-    const gruppoAttuale = data.gruppo;
-
-    // Alterna colori se cambia gruppo
-    if (gruppoAttuale !== ultimoGruppo) {
-      ultimoGruppo = gruppoAttuale;
-      usaGiallo = !usaGiallo;
-    }
-
-    const classeRiga = usaGiallo ? "riga-gialla" : "riga-rosa";         
-    //html += `<tr ondblclick="apriModifica('${doc.id}')" class="${classeRiga}">`;
-
-    let garanzia = "";
-    let totale = "";
-
-    if (data.sel === "YES") {
-      html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
-      html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')" checked></td>`;
-    } else {
-      html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
-      html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')"></td>`;
-    }
-    
-    for (const campo of campiDaVisualizzare) {
-      const valore = data[campo] || "";
-
-      if (campo === "prezzo") {
-        html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
-
-        if (data.marca && valore) {
-          try {
-            const prezzoNum = parseFloat(valore);
-            const risultatoGaranzia = await calcolaGaranziaEsatta(data.marca, prezzoNum);
-            garanzia = risultatoGaranzia.garanzia;
-            totale = risultatoGaranzia.totale;
-          } catch (err) {
-            console.warn("Errore nel calcolo garanzia:", err);
-          }
-        }
-
-        html += `<td>${garanzia !== "" ? garanzia.toFixed(2) : ""}</td>`;
-        if (data.sel === "YES") {
-          html += `<td class="rigaevid"><b>${totale !== "" ? totale.toFixed(2) : ""}</b></td>`;
-        } else {
-          html += `<td><b>${totale !== "" ? totale.toFixed(2) : ""}</b></td>`;
-        }
-      } else if (["ivrea"].includes(campo)){
-        if (data.expo ==="SI"){
-          html += `<td><input name="${campo}" value="${valore}" class="inputexpo"></td>`;
-        } else {
-          html += `<td><input name="${campo}" value="${valore}" class="inputgiacenze"></td>`;
-        }
-      } else if (["sede"].includes(campo)) {
-        html += `<td><input name="${campo}" value="${valore}" class="inputgiacenze"></td>`;
-      
-      
-      } else if (["codice"].includes(campo)){
-        html += `<td>${valore}</td>`;
-      } else{
-        html += `<td ondblclick="apriModifica('${doc.id}')">${valore}</td>`;
-      }
-    }
-
-    html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
-    if (data.check === "YES") {
-      html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')" checked></td>`;
-    } else {
-      html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')"></td>`;
-    }
-    html += `</tr>`;
-  }
-
-  html += `</tbody></table>`;
-  document.getElementById("tabella").innerHTML = html;
-}
-*/
 async function mostraTabella(docs) {
   const risultatiGaranzia = await Promise.all(docs.map(doc => {
     const data = doc.data();
@@ -552,6 +465,15 @@ function fastfilter() {
       });
   }
 
+function filtraPerGruppo() {
+    const gruppiSelezionati = [];
+    document.querySelectorAll('input[name="gruppoFilter"]:checked').forEach(checkbox => {
+        gruppiSelezionati.push(checkbox.value);
+    });
 
+    // Se nessun gruppo è selezionato, mostriamo tutti i notebook.
+    // Altrimenti, filtriamo per i gruppi selezionati.
+    visualizzaNotebook({ gruppi: gruppiSelezionati });
+}
 
 
