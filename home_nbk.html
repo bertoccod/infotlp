@@ -57,9 +57,29 @@
         </form>
       </div>
   <div class="fastfiltero">
-    <b>Codice AS400:</b>
-    <input id="fastfilterinput" type="text" placeholder="Filtro veloce">    </input>
-    <button onclick="pronti()" id="btnFiltroIvrea">🔍 Nbk imballo chiuso</button>
+      <b>Codice AS400:</b>
+      <input id="fastfilterinput" type="text" placeholder="Filtro veloce"></input>
+      <button onclick="pronti()" id="btnFiltroIvrea">🔍 Nbk imballo chiuso</button>
+
+      <div class="filtri-gruppi-container">
+          <b>Filtra per gruppo:</b>
+          <div class="filtro-singolo">
+              <input type="checkbox" id="gruppo1" name="gruppoFilter" value="3_i3/R3-15">
+              <label for="gruppo1">3</label>
+          </div>
+
+          <div class="filtro-singolo">
+              <input type="checkbox" id="gruppo2" name="gruppoFilter" value="5_i5/R5-15">
+              <label for="gruppo2">5</label>
+          </div>
+
+          <div class="filtro-singolo">
+              <input type="checkbox" id="gruppo3" name="gruppoFilter" value="6_i7/R7-15">
+              <label for="gruppo3">7</label>
+          </div>
+
+          <button onclick="filtraPerGruppo()">Applica Filtri</button>
+      </div>
   </div>
   <div id="tabella"></div>
     <div id="overlayModifica" class="overlay" style="display:none;">
