@@ -10,7 +10,7 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const campiDaVisualizzare = ["marca", "nome", "brand", "pollici", "cpu", "ram", "ssd", "5G", "back", "front", "volantino", "x", "prezzo", "expo", "ivrea"];
+const campiDaVisualizzare = ["marca", "nome","brand", "pollici", "cpu", "ram", "ssd", "5G", "back", "front", "x","prezzo", "expo","ivrea"];
 let datiCorrenti = null;
 
 window.onload = function() {
@@ -32,27 +32,29 @@ window.onload = function() {
         datiFiltri[el.name] = el.value;
       }
     }
-    visualizzaSmartphone(datiFiltri);
+      visualizzaSmartphone(datiFiltri);
     document.getElementById("sezioneFiltri").style.display = "none";
   });
   document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
+}
 
-
-  // ✅ CLIC ESTERNO CHIUDE MODALE
+// ✅ CLIC ESTERNO CHIUDE MODALE
   document.getElementById("overlayModifica").addEventListener("click", function(e) {
     const contenuto = document.querySelector(".overlay-content");
     if (!contenuto.contains(e.target)) {
       chiudiOverlay();
     }
   });
-}
+
 
 
 // Popola select campi filtrabili
 const campiFiltrabili = [
-  "marca", "brand", "gruppo", "ram", "ssd"];
+  "marca", "brand", "pollici", "cpu", "gruppo", "ram", "ssd",
+  "front","back", "webcam"
+];
 const campiBooleani = [
-  "5G", "espandibile", "dualsim", "volantino", "x", "expo"
+  "5G", "dualsim","espandibile", "volantino", "x", "expo"
 ];
 
 // 🎛️ Campi da metadata
@@ -111,7 +113,6 @@ campiBooleani.forEach(campo => {
 });
 
 
-
 // 🎯 Visualizza smartphone con filtri
 function visualizzaSmartphone(filtri = {}) {
   db.collection("tlp")
@@ -125,7 +126,7 @@ function visualizzaSmartphone(filtri = {}) {
         const d = doc.data();
 
         // Campi con confronto diretto (select)
-        for (let campo of ["marca", "brand","gruppo", "5G", "ram", "ssd", "dualsim", "espandibile", "volantino","x", "expo"]) {
+        for (let campo of ["marca","brand", "gruppo", "ram", "ssd", "dualsim", "espandibile", "volantino", "x", "expo"]) {
           if (filtri[campo] && d[campo] !== filtri[campo]) return false;
         }
 
@@ -136,25 +137,10 @@ function visualizzaSmartphone(filtri = {}) {
         const RealMax = d.prezzo/100;
         let RealMaxVal = RealMax*11;
         RealMaxVal +=Number(d.prezzo)+25;
-        /*const FtMin = Number(filtri.prezzoMin)/100;
-        let FtMinVal = FtMin*11;
-        FtMinVal +=Number(filtri.prezzoMin);
-        const RealMin = d.prezzo/100;
-        let RealMinVal = RealMin*11;
-        RealMinVal +=Number(d.prezzo);*/
-        /*
-        if (filtri.prezzoMin && d.prezzo < Number(filtri.prezzoMin)) return false;
-        if (filtri.prezzoMax && d.prezzo > Number(filtri.prezzoMax)) return false;*/
+
         if (filtri.prezzoMin && d.prezzo < Number(filtri.prezzoMin)) return false;
         if (FtMaxVal && RealMaxVal > FtMaxVal) return false;
 
-
-        // 🔎 Codice contiene
-        if (filtri.nome && !((d.nome || "").toLowerCase().includes(filtri.nome.toLowerCase()))) return false;
-        if (filtri.front && !((d.front || "").toLowerCase().includes(filtri.front.toLowerCase()))) return false;
-        if (filtri.back && !((d.back || "").toLowerCase().includes(filtri.back.toLowerCase()))) return false;
-        if (filtri.pollici && !((d.pollici || "").toLowerCase().includes(filtri.pollici.toLowerCase()))) return false;
-        if (filtri.cpu && !((d.cpu || "").toLowerCase().includes(filtri.cpu.toLowerCase()))) return false;
         return true;
       });
 
@@ -167,78 +153,59 @@ function visualizzaSmartphone(filtri = {}) {
 
 
 async function mostraTabella(docs) {
-  let html = `<table class="elenco"><thead><tr>`;
+  const risultatiGaranzia = await Promise.all(docs.map(doc => {
+    const data = doc.data();
+    const prezzo = parseFloat(data.prezzo);
+    if (data.marca && prezzo) {
+      return calcolaGaranziaEsatta(data.marca, prezzo);
+    }
+    return Promise.resolve({ garanzia: 0, totale: prezzo + 55 });
+  }));
 
-  // Intestazione con aggiunta di Garanzia e Totale dopo Prezzo
-  html+='<th>Selez.</th>'
+  let html = `<table class="elenco"><thead><tr><th>Selez.</th>`;
   for (const campo of campiDaVisualizzare) {
     html += `<th>${campo}</th>`;
-    if (campo === "prezzo") {
-      html += `<th>Garanzia</th><th>Totale</th>`;
-    }
+    if (campo === "prezzo") html += `<th>Garanzia</th><th>Totale</th>`;
   }
-  html += `<th>Azioni</th></tr></thead><tbody>`;
+  html += `<th>Azioni</th><th>&#x2714</th></tr></thead><tbody>`;
 
   let ultimoGruppo = null;
   let usaGiallo = true;
 
-  for (const doc of docs) {
+  for (let i = 0; i < docs.length; i++) {
+    const doc = docs[i];
     const data = doc.data();
-    const gruppoAttuale = data.gruppo;
+    const { garanzia, totale } = risultatiGaranzia[i];
 
-    // Alterna colori se cambia gruppo
+    const gruppoAttuale = data.gruppo;
     if (gruppoAttuale !== ultimoGruppo) {
       ultimoGruppo = gruppoAttuale;
       usaGiallo = !usaGiallo;
     }
 
-    const classeRiga = usaGiallo ? "riga-gialla" : "riga-rosa";         
-    //html += `<tr ondblclick="apriModifica('${doc.id}')" class="${classeRiga}">`;
-
-    let garanzia = "";
-    let totale = "";
-
-    if (data.sel === "YES") {
-      html += `<tr ondblclick="apriModifica('${doc.id}')" class="rigaevid" data-classe="${classeRiga}">`;
-      html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')" checked></td>`;
-    } else {
-      html += `<tr ondblclick="apriModifica('${doc.id}')" class="${classeRiga}" data-classe="${classeRiga}">`;
-      html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')"></td>`;
-    }
+    const classeRiga = usaGiallo ? "riga-gialla" : "riga-rosa";
+    html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
+    html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')" ${data.sel === "YES" ? "checked" : ""}></td>`;
 
     for (const campo of campiDaVisualizzare) {
       const valore = data[campo] || "";
 
       if (campo === "prezzo") {
         html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
-
-        if (data.marca && valore) {
-          try {
-            const prezzoNum = parseFloat(valore);
-            if (prezzoNum>149.99){
-              const risultatoGaranzia = await calcolaGaranziaEsatta(prezzoNum);
-              garanzia = risultatoGaranzia.garanzia;
-              totale = risultatoGaranzia.totale;
-            } else {
-              garanzia=9.9;
-              totale = prezzoNum + 9.9;
-            }
-            
-          } catch (err) {
-            console.warn("Errore nel calcolo garanzia:", err);
-          }
-        }
-
-        html += `<td>${garanzia !== "" ? garanzia.toFixed(2) : ""}</td>`;
-        html += `<td><b>${totale !== "" ? totale.toFixed(2) : ""}</b></td>`;
-      } else if (["ivrea", "sede"].includes(campo)) {
+        html += `<td>${garanzia.toFixed(2)}</td>`;
+        html += `<td${data.sel === "YES" ? ' class="rigaevid"' : ""}><b>${totale.toFixed(2)}</b></td>`;
+      } else if (campo === "ivrea") {
+        const classe = data.expo === "SI" ? "inputexpo" : "inputgiacenze";
+        html += `<td><input name="${campo}" value="${valore}" class="${classe}"></td>`;
+      } else if (campo === "sede") {
         html += `<td><input name="${campo}" value="${valore}" class="inputgiacenze"></td>`;
       } else {
-        html += `<td>${valore}</td>`;
+        html += `<td ondblclick="apriModifica('${doc.id}')">${valore}</td>`;
       }
     }
 
     html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
+    html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')" ${data.check === "YES" ? "checked" : ""}></td>`;
     html += `</tr>`;
   }
 
@@ -246,46 +213,69 @@ async function mostraTabella(docs) {
   document.getElementById("tabella").innerHTML = html;
 }
 
-
-async function calcolaGaranziaEsatta(prezzoSmartphone) {
-  //console.log("🔍 Calcolo garanzia per marca:", marca, "e prezzo:", prezzoNotebook);
+async function calcolaGaranziaEsatta(marca, prezzoNotebook) {
   try {
+    // 1️⃣ Recupera il documento "gruppi" per trovare la lettera del gruppo associato alla marca
+    const gruppiDoc = await db.collection("gar_tlp").doc("gruppi").get();
+    const gruppoLettera = gruppiDoc.data()?.[marca];
+
+    if (!gruppoLettera) {
+      console.warn(`⚠️ Nessun gruppo trovato per la marca: ${marca}`);
+      return { garanzia: 0, totale: prezzoNotebook + 55 };
+    }
+
     // 2️⃣ Recupera il documento con ID uguale alla lettera
-    const gruppoDoc = await db.collection("gar_tlp").doc("values").get();
-    const garanziaValore = gruppoDoc.data()?.[String(prezzoSmartphone)];
+    const gruppoDoc = await db.collection("gar_tlp").doc(gruppoLettera).get();
+    const garanziaValore = gruppoDoc.data()?.[String(prezzoNotebook)];
 
     if (garanziaValore === undefined) {
-      console.warn(`⚠️ Nessuna garanzia trovata per il prezzo ${prezzoSmartphone}`);
-      return { garanzia: 0, totale: prezzoSmartphone + 40 };
+      console.warn(`⚠️ Nessuna garanzia trovata per il prezzo ${prezzoNotebook} nel gruppo ${gruppoLettera}`);
+      return { garanzia: 0, totale: prezzoNotebook + 25 };
     }
 
     // 3️⃣ Calcola il totale
     return {
       garanzia: garanziaValore,
-      totale: prezzoSmartphone + garanziaValore + 25
+      totale: prezzoNotebook + garanziaValore + 25
     };
 
   } catch (err) {
     console.error("❌ Errore nel calcolo della garanzia:", err);
-    return { garanzia: 0, totale: prezzoSmartphone};
+    return { garanzia: 0, totale: prezzoNotebook + 55 };
   }
 }
 
 //EVIDENZIA RIGA
-function evidenzia(checkbox, idDoc) {
-  const riga = checkbox.parentNode.parentNode;
-  const classeOriginale = riga.getAttribute("data-classe");
+  function evidenzia(checkbox, idDoc) {
+    const riga = checkbox.parentNode.parentNode;
+    const cellaDaEvidenziare = riga.cells[12]; // Cambia l'indice per scegliere la colonna
 
+    const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
+
+    if (checkbox.checked) {
+      cellaDaEvidenziare.classList.remove("riga-gialla", "riga-rosa");
+      cellaDaEvidenziare.classList.add("rigaevid");
+      db.collection("tlp").doc(idDoc).update({ sel: "YES" });
+    } else {
+      cellaDaEvidenziare.classList.remove("rigaevid");
+      if (classeOriginale) {
+        cellaDaEvidenziare.classList.add(classeOriginale);
+      }
+      db.collection("tlp").doc(idDoc).update({ sel: "NO" });
+    }
+  }
+
+
+//SPUNTALO
+function spuntalo(checkbox, idDoc) {
+  const riga = checkbox.parentNode.parentNode;
   if (checkbox.checked) {
-    riga.classList.remove("riga-gialla", "riga-rosa");
-    riga.classList.add("rigaevid");
-    db.collection("tlp").doc(idDoc).update({ sel: "YES" });
+    db.collection("tlp").doc(idDoc).update({ check: "YES" });
   } else {
-    riga.classList.remove("rigaevid");
-    riga.classList.add(classeOriginale);
-    db.collection("tlp").doc(idDoc).update({ sel: "NO" });
+    db.collection("tlp").doc(idDoc).update({ check: "NO" });
   }
 }
+
 
 
 
@@ -379,32 +369,29 @@ function aggiornaPrezzo(idDoc, event) {
   const riga = event.target.closest("tr"); // trova la <tr> del bottone cliccato
   const prezzoInput = riga.querySelector('input[name="prezzo"]');
   const ivreaInput = riga.querySelector('input[name="ivrea"]');
+  const sedeInput = riga.querySelector('input[name="sede"]');
 
   const nuovoPrezzo = Number(prezzoInput.value);
   const nuovoIvrea = ivreaInput.value.trim();
+  const nuovaSede = sedeInput.value.trim();
 
   db.collection("tlp").doc(idDoc).update({
     prezzo: nuovoPrezzo,
     ivrea: nuovoIvrea,
+    sede: nuovaSede
   }).then(() => {
     prezzoInput.style.border = "2px solid green";
     ivreaInput.style.border = "2px solid green";
+    sedeInput.style.border = "2px solid green";
 
     setTimeout(() => {
       prezzoInput.style.border = "";
       ivreaInput.style.border = "";
+      sedeInput.style.border = "";
     }, 1500);
-    visualizzaSmartphone();
+  visualizzaSmartphone();
   }).catch(err => {
     alert("⚠️ Errore nell'aggiornamento: " + err.message);
   });
 }
-//FILTRO VELOCE
-function fastfilter() {
-  const valoreCodice = document.getElementById("fastfilterinput").value.trim().toLowerCase();
-
-  // Imposta solo il filtro codice, gli altri restano vuoti
-  visualizzaSmartphone({ nome: valoreCodice });
-}
-
 
