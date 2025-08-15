@@ -118,6 +118,7 @@ function visualizzaSmartphone(filtri = {}) {
   db.collection("tlp")
     .orderBy("gruppo", "asc")
     .orderBy("marca", "asc")
+    .orderBy("nome", "asc")
     .get()
     .then(snapshot => {
       let docs = snapshot.docs;
@@ -370,25 +371,20 @@ function aggiornaPrezzo(idDoc, event) {
   const riga = event.target.closest("tr"); // trova la <tr> del bottone cliccato
   const prezzoInput = riga.querySelector('input[name="prezzo"]');
   const ivreaInput = riga.querySelector('input[name="ivrea"]');
-  const sedeInput = riga.querySelector('input[name="sede"]');
 
   const nuovoPrezzo = Number(prezzoInput.value);
   const nuovoIvrea = ivreaInput.value.trim();
-  const nuovaSede = sedeInput.value.trim();
 
   db.collection("tlp").doc(idDoc).update({
     prezzo: nuovoPrezzo,
     ivrea: nuovoIvrea,
-    sede: nuovaSede
   }).then(() => {
     prezzoInput.style.border = "2px solid green";
     ivreaInput.style.border = "2px solid green";
-    sedeInput.style.border = "2px solid green";
 
     setTimeout(() => {
       prezzoInput.style.border = "";
       ivreaInput.style.border = "";
-      sedeInput.style.border = "";
     }, 1500);
   visualizzaSmartphone();
   }).catch(err => {
