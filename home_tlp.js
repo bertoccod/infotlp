@@ -117,6 +117,7 @@ campiBooleani.forEach(campo => {
 function visualizzaSmartphone(filtri = {}) {
   db.collection("tlp")
     .orderBy("gruppo", "asc")
+    .orderBy("marca", "asc")
     .get()
     .then(snapshot => {
       let docs = snapshot.docs;
