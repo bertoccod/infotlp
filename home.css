@@ -192,33 +192,34 @@ form button {
 form button:hover {
   background-color: #005fa3;
 }
+/* FAST FILTER*/
 
+/* Stili per l'intero contenitore principale */
 .fastfiltero {
-  text-align: left;          /* allinea il contenuto a sinistra */
-  padding-left: 15px;        /* spazio interno a sinistra del contenitore */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 95vw; /* L'intero blocco occupa il 95% della larghezza della viewport */
+  margin: 0 auto; /* Centra orizzontalmente il contenitore */
 }
 
-.fastfiltero input {
-  margin-left: 0;            /* togli il margine extra sull'input */
-  padding-left: 15px;        /* spazio interno nel campo di input */
-  font-size: 14px;
-  width:10vw;
-  text-align: left;
+/* Stili per gli elementi interni del blocco "fast" */
+.fast {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Spazio tra gli elementi interni del blocco "fast" */
 }
-/* Contenitore principale che allinea tutto il blocco a destra */
+
+/* Stili per il contenitore dei filtri per gruppo */
 .filtri-gruppi-container {
-    display: flex;
-    justify-content: flex-end; /* Allinea il contenuto a destra */
-    width: 100%;
+  display: flex; /* Dispone gli elementi in linea */
+  align-items: center;
+  gap: 15px; /* Spazio tra i vari elementi (titolo, checkbox, pulsante) */
 }
 
-/* Stile per ogni singolo filtro (checkbox + label) */
+/* Stili per ogni singolo filtro (checkbox e label) */
 .filtro-singolo {
-    display: inline-flex;
-    align-items: center;
-    margin-right: 15px; /* Spazio tra i vari gruppi di checkbox */
-}
-
-.filtro-singolo input[type="checkbox"] {
-    margin-right: 5px; /* Spazio ridotto tra la checkbox e la sua label */
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Spazio tra la checkbox e la sua label */
 }
