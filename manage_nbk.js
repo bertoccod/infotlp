@@ -207,7 +207,7 @@ function buildFormWarranty(data) {
 
   // riga nuovo campo
   const addRow = document.createElement('div');
-  addRow.className = 'field-row';
+  addRow.className = 'field-row add-row'; // Aggiungi una classe per identificarla
 
   const newKey = document.createElement('input');
   newKey.type = 'text';
@@ -226,7 +226,7 @@ function buildFormWarranty(data) {
     const k = newKey.value.trim();
     const v = newVal.value.trim();
     if (!k || !v) return;
-    if (requireNum && isNaN(v)) {
+    if (requireNum && isNaN(Number(v))) {
       alert('Inserisci un valore numerico valido');
       return;
     }
@@ -265,13 +265,18 @@ function buildFormWarranty(data) {
   saveBtn.onclick = async () => {
     const payload = {};
     let valid = true;
-    form.querySelectorAll('.field-row').forEach(r => {
-      const nameEl = r.querySelector('.field-name') || r.children[0];
+    // Seleziona solo le righe che non sono quella di aggiunta
+    form.querySelectorAll('.field-row:not(.add-row)').forEach(r => {
+      const nameEl = r.querySelector('.field-name');
       const valEl  = r.querySelector('input');
+
       if (!nameEl || !valEl) return;
-      const k = (nameEl.textContent || nameEl.value).trim();
+
+      const k = nameEl.textContent.trim();
       const v = valEl.value.trim();
+
       if (!k) return;
+
       if (requireNum) {
         const num = Number(v);
         if (v === '' || isNaN(num)) valid = false;

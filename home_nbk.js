@@ -10,7 +10,7 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const campiDaVisualizzare = ["codice", "marca", "nome", "pollici", "cpu", "generazione", "gpu", "ram", "ssd", "prezzo", "ivrea", "sede"];
+const campiDaVisualizzare = ["codice", "marca", "nome", "pollici", "cpu", "generazione", "gpu", "ram", "ssd", "x", "prezzo", "ivrea", "sede"];
 let datiCorrenti = null;
 
 window.onload = function() {

@@ -215,35 +215,33 @@ async function mostraTabella(docs) {
   document.getElementById("tabella").innerHTML = html;
 }
 
-async function calcolaGaranziaEsatta(marca, prezzoNotebook) {
+async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
   try {
-    // 1️⃣ Recupera il documento "gruppi" per trovare la lettera del gruppo associato alla marca
-    const gruppiDoc = await db.collection("gar_tlp").doc("gruppi").get();
-    const gruppoLettera = gruppiDoc.data()?.[marca];
-
-    if (!gruppoLettera) {
-      console.warn(`⚠️ Nessun gruppo trovato per la marca: ${marca}`);
-      return { garanzia: 0, totale: prezzoNotebook + 55 };
-    }
 
     // 2️⃣ Recupera il documento con ID uguale alla lettera
-    const gruppoDoc = await db.collection("gar_tlp").doc(gruppoLettera).get();
-    const garanziaValore = gruppoDoc.data()?.[String(prezzoNotebook)];
+    const gruppoDoc = await db.collection("gar_tlp").doc("values").get();
+    const garanziaValore = gruppoDoc.data()?.[String(prezzoSmartphone)];
 
     if (garanziaValore === undefined) {
-      console.warn(`⚠️ Nessuna garanzia trovata per il prezzo ${prezzoNotebook} nel gruppo ${gruppoLettera}`);
-      return { garanzia: 0, totale: prezzoNotebook + 25 };
+      console.warn(`⚠️ Nessuna garanzia trovata per il prezzo ${prezzoSmartphone}`);
+      return { garanzia: 0, totale: prezzoSmartphone + 40 };
     }
-
-    // 3️⃣ Calcola il totale
-    return {
-      garanzia: garanziaValore,
-      totale: prezzoNotebook + garanziaValore + 25
-    };
-
+    if (garanziaValore<22,5){
+      return {
+        garanzia: garanziaValore,
+        totale: prezzoSmartphone + garanziaValore + 40
+      };
+    } else{
+      return {
+        garanzia: garanziaValore,
+        totale: prezzoSmartphone + garanziaValore + 25
+      };
+      
+    }
+    
   } catch (err) {
     console.error("❌ Errore nel calcolo della garanzia:", err);
-    return { garanzia: 0, totale: prezzoNotebook + 55 };
+    return { garanzia: 0, totale: prezzoSmartphone + 40 };
   }
 }
 
