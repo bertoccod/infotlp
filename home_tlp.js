@@ -226,10 +226,10 @@ async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
       console.warn(`⚠️ Nessuna garanzia trovata per il prezzo ${prezzoSmartphone}`);
       return { garanzia: 0, totale: prezzoSmartphone + 40 };
     }
-    if (garanziaValore<22,5){
+    if (garanziaValore<22.5){
       return {
         garanzia: garanziaValore,
-        totale: prezzoSmartphone + garanziaValore + 40
+        totale: prezzoSmartphone + garanziaValore
       };
     } else{
       return {
@@ -248,7 +248,7 @@ async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
 //EVIDENZIA RIGA
   function evidenzia(checkbox, idDoc) {
     const riga = checkbox.parentNode.parentNode;
-    const cellaDaEvidenziare = riga.cells[12]; // Cambia l'indice per scegliere la colonna
+    const cellaDaEvidenziare = riga.cells[15]; // Cambia l'indice per scegliere la colonna
 
     const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
 
