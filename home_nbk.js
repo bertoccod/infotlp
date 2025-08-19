@@ -1,3 +1,4 @@
+
 // 🔧 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDaERrSbbXOpYVcjUIvx_X1HtGi8kFyHCI",
@@ -9,126 +10,145 @@ const firebaseConfig = {
 };
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 const campiDaVisualizzare = ["codice", "marca", "nome", "pollici", "cpu", "generazione", "gpu", "ram", "ssd", "x", "prezzo", "ivrea", "sede"];
 let datiCorrenti = null;
 
-window.onload = function() {
-  console.log("🚀 JS caricato e DOM pronto");
-  visualizzaNotebook();
-
-  document.getElementById("btnModifica").addEventListener("click", abilitaModifica);
-  document.getElementById("btnElimina").addEventListener("click", eliminaRecord);
-  document.getElementById("btnAnnulla").addEventListener("click", chiudiOverlay);
-  document.getElementById("modificaForm").addEventListener("submit", aggiornaRecord);
-
-  document.getElementById("filtriForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const datiFiltri = {};
-    const elementi = e.target.elements;
-    for (let i = 0; i < elementi.length; i++) {
-      const el = elementi[i];
-      if (el.name && el.value !== "") {
-        datiFiltri[el.name] = el.value;
-      }
-    }
-    visualizzaNotebook(datiFiltri);
-    document.getElementById("sezioneFiltri").style.display = "none";
-  });
-  document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
-
-
-  // ✅ CLIC ESTERNO CHIUDE MODALE
-  document.getElementById("overlayModifica").addEventListener("click", function(e) {
-    const contenuto = document.querySelector(".overlay-content");
-    if (!contenuto.contains(e.target)) {
-      chiudiOverlay();
-    }
-  });
-}
-
-
-// Popola select campi filtrabili
-const campiFiltrabili = [
-  "marca", "pollici", "cpu", "gruppo", "gpu", "ram", "ssd",
-  "sistemaoperativo", "webcam"
-];
-const campiBooleani = [
-  "evo","game", "touch", "retroilluminazione", "RJ45", "cardReader",
-  "volantino", "expo", "x"
-];
-
-// 🎛️ Campi da metadata
-campiFiltrabili.forEach(async campo => {
-  const snap = await db.collection("metadata_nbk").doc(campo).get();
-  const valori = snap.data()?.values || [];
-
-  const selectFiltro = document.querySelector(`#filtriForm select[name="${campo}"]`);
-  if (selectFiltro) {
-    selectFiltro.innerHTML = "";
-    const blank = document.createElement("option");
-    blank.value = "";
-    blank.textContent = "-- Nessuna selezione --";
-    selectFiltro.appendChild(blank);
-    valori.forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      selectFiltro.appendChild(opt);
-    });
+auth.onAuthStateChanged(user => {
+  if (user) {
+    console.log("✅ Utente autenticato:", user.email);
+    inizializzaNotebook(); // Tutto il tuo codice qui
+  } else {
+    console.log("❌ Utente NON autenticato. Redirect...");
+    window.location.href = "index.html";
   }
+});
 
-  if (campo === "cpu") {
-    const selectCpu2 = document.querySelector(`#filtriForm select[name="cpu2"]`);
-    if (selectCpu2) {
-      selectCpu2.innerHTML = "";
+function inizializzaNotebook(){
+
+  //window.onload = function() {
+    console.log("🚀 JS caricato e DOM pronto");
+    visualizzaNotebook();
+
+    document.getElementById("btnModifica").addEventListener("click", abilitaModifica);
+    document.getElementById("btnElimina").addEventListener("click", eliminaRecord);
+    document.getElementById("btnAnnulla").addEventListener("click", chiudiOverlay);
+    document.getElementById("modificaForm").addEventListener("submit", aggiornaRecord);
+
+    document.getElementById("filtriForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const datiFiltri = {};
+      const elementi = e.target.elements;
+      for (let i = 0; i < elementi.length; i++) {
+        const el = elementi[i];
+        if (el.name && el.value !== "") {
+          datiFiltri[el.name] = el.value;
+        }
+      }
+      visualizzaNotebook(datiFiltri);
+      document.getElementById("sezioneFiltri").style.display = "none";
+    });
+    document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
+
+
+    // ✅ CLIC ESTERNO CHIUDE MODALE
+    document.getElementById("overlayModifica").addEventListener("click", function(e) {
+      const contenuto = document.querySelector(".overlay-content");
+      if (!contenuto.contains(e.target)) {
+        chiudiOverlay();
+      }
+    });
+ // }
+
+
+  // Popola select campi filtrabili
+  const campiFiltrabili = [
+    "marca", "pollici", "cpu", "gruppo", "gpu", "ram", "ssd",
+    "sistemaoperativo", "webcam"
+  ];
+  const campiBooleani = [
+    "evo","game", "touch", "retroilluminazione", "RJ45", "cardReader",
+    "volantino", "expo", "x"
+  ];
+
+  // 🎛️ Campi da metadata
+  campiFiltrabili.forEach(async campo => {
+    const snap = await db.collection("metadata_nbk").doc(campo).get();
+    const valori = snap.data()?.values || [];
+
+    const selectFiltro = document.querySelector(`#filtriForm select[name="${campo}"]`);
+    if (selectFiltro) {
+      selectFiltro.innerHTML = "";
       const blank = document.createElement("option");
       blank.value = "";
       blank.textContent = "-- Nessuna selezione --";
-      selectCpu2.appendChild(blank);
+      selectFiltro.appendChild(blank);
       valori.forEach(v => {
         const opt = document.createElement("option");
         opt.value = v;
         opt.textContent = v;
-        selectCpu2.appendChild(opt);
+        selectFiltro.appendChild(opt);
       });
     }
-  }
 
-  const selectModifica = document.querySelector(`#modificaForm select[name="${campo}"]`);
-  if (selectModifica) {
-    selectModifica.innerHTML = "";
-    const blank = document.createElement("option");
-    blank.value = "";
-    blank.textContent = "-- Nessuna selezione --";
-    selectModifica.appendChild(blank);
-    valori.forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      selectModifica.appendChild(opt);
-    });
-  }
-});
+    if (campo === "cpu") {
+      const selectCpu2 = document.querySelector(`#filtriForm select[name="cpu2"]`);
+      if (selectCpu2) {
+        selectCpu2.innerHTML = "";
+        const blank = document.createElement("option");
+        blank.value = "";
+        blank.textContent = "-- Nessuna selezione --";
+        selectCpu2.appendChild(blank);
+        valori.forEach(v => {
+          const opt = document.createElement("option");
+          opt.value = v;
+          opt.textContent = v;
+          selectCpu2.appendChild(opt);
+        });
+      }
+    }
 
-// 🎛️ Campi booleani: SI / NO
-campiBooleani.forEach(campo => {
-  const selectModifica = document.querySelector(`#modificaForm select[name="${campo}"]`);
-  if (selectModifica) {
-    selectModifica.innerHTML = "";
-    const blank = document.createElement("option");
-    blank.value = "";
-    blank.textContent = "-- Nessuna selezione --";
-    selectModifica.appendChild(blank);
+    const selectModifica = document.querySelector(`#modificaForm select[name="${campo}"]`);
+    if (selectModifica) {
+      selectModifica.innerHTML = "";
+      const blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "-- Nessuna selezione --";
+      selectModifica.appendChild(blank);
+      valori.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        selectModifica.appendChild(opt);
+      });
+    }
+  });
 
-    ["SI", "NO"].forEach(val => {
-      const opt = document.createElement("option");
-      opt.value = val;
-      opt.textContent = val;
-      selectModifica.appendChild(opt);
-    });
-  }
-});
+  // 🎛️ Campi booleani: SI / NO
+  campiBooleani.forEach(campo => {
+    const selectModifica = document.querySelector(`#modificaForm select[name="${campo}"]`);
+    if (selectModifica) {
+      selectModifica.innerHTML = "";
+      const blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "-- Nessuna selezione --";
+      selectModifica.appendChild(blank);
+
+      ["SI", "NO"].forEach(val => {
+        const opt = document.createElement("option");
+        opt.value = val;
+        opt.textContent = val;
+        selectModifica.appendChild(opt);
+      });
+    }
+  });
+
+
+}
+
+
+
 
 
 // 🎯 Visualizza notebook con filtri
@@ -475,5 +495,3 @@ function filtraPerGruppo() {
     // Altrimenti, filtriamo per i gruppi selezionati.
     visualizzaNotebook({ gruppi: gruppiSelezionati });
 }
-
-

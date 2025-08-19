@@ -10,6 +10,9 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
+
+
 
 // 2) Stato applicazione
 // ----------------------
@@ -29,6 +32,18 @@ const MAP = {
 const breadcrumb    = document.getElementById('breadcrumb');
 const submenuEl     = document.getElementById('submenu');
 const formContainer = document.getElementById('formContainer');
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    console.log("✅ Utente autenticato:", user.email);
+    // Puoi anche verificare ruoli o claims qui
+    loadSubmenu('specs'); // o 'warranty'
+  } else {
+    console.warn("❌ Utente non autenticato. Redirect...");
+    window.location.href = "index.html";
+  }
+});
+
 
 // 5) Carica sottomenu (colonna 2)
 // --------------------------------
@@ -305,3 +320,4 @@ function buildFormWarranty(data) {
   };
   form.appendChild(saveBtn);
 }
+

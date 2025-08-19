@@ -9,11 +9,22 @@ const firebaseConfig = {
 };
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 const campiDaVisualizzare = ["marca", "nome","brand", "pollici", "cpu", "ram", "ssd", "5G", "back", "front", "ottica", "x","prezzo", "expo","ivrea"];
 let datiCorrenti = null;
 
-window.onload = function() {
+auth.onAuthStateChanged(user => {
+  if (user) {
+    console.log("✅ Utente autenticato:", user.email);
+    inizializzaSmartphone(); // Tutto il tuo codice qui
+  } else {
+    console.log("❌ Utente NON autenticato. Redirect...");
+    window.location.href = "index.html";
+  }
+});
+
+function inizializzaSmartphone() {
   console.log("🚀 JS caricato e DOM pronto");
   visualizzaSmartphone();
 

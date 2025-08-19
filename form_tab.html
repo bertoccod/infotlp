@@ -1,95 +1,97 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Inserisci Tablet</title>
-  <link rel="stylesheet" href="form_nbk.css">
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-</head>
-<body>
-  <nav class="menu">
-    <ul>
-      <li><a href="home_tab.html">📄 Visualizza tablet</a></li>
-      <li><a href="manage_tab.html">🛠️ Manutenzione</a></li>
-      <li><a href="index.html">🔙 Home</a></li>
-    </ul>
-  </nav>
-
-  <h2>📝 Inserisci nuovo Tablet</h2>
-
-  <form id="tabletForm">
-    <div>
-      <label>Codice</label>
-      <input type="text" name="codice" required>
-    </div>
-    <div>
-      <label>Marca</label>
-      <select name="marca"></select>
-    </div>
-
-    <div>
-      <label>Nome</label>
-      <input type="text" name="nome">
-    </div>
-    <div>
-      <label>Tipo</label>
-      <select name="tipo"></select>
-    </div>
-    <div>
-      <label>Pollici</label>
-      <select name="pollici"></select>
-    </div>
-    <div>
-      <label>RAM</label>
-      <select name="ram"></select>
-    </div>
-    <div>
-      <label>SSD</label>
-      <select name="ssd"></select>
-    </div>
-    <div>
-      <label>Volantino</label>
-      <select name="volantino"><option>SI</option><option selected>NO</option></select>
-    </div>
-
-    <div>
-      <label>X</label>
-      <select name="x"><option>SI</option><option selected>NO</option></select>
-    </div>
-    <div>
-      <label>Prezzo</label>
-      <input type="number" name="prezzo" step="any">
-    </div>
-
-    <div>
-      <label>Expo</label>
-      <select name="expo"><option>SI</option><option selected>NO</option></select>
-    </div>
-    <div>
-      <label>Ivrea no Expo</label>
-      <input type="number" name="ivrea">
-    </div>
-    <div>
-      <label>Sede</label>
-      <input type="number" name="sede">
-    </div>
-    <div class="full-width">
-      <label>Link</label>
-      <input type="text" name="link">
-    </div>
-    <div class="full-width">
-      <label>Note</label>
-      <input type="text" name="note">
-    </div>
-
-
-    <button type="submit">💾 Salva</button>
-  </form>
-
-
-  <p id="statusMsg" style="margin-top:20px;"></p>
-
-  <script src="form_tab.js"></script>
-</body>
-</html>
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Inserisci Tablet</title>
+    <link rel="stylesheet" href="form_nbk.css">
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  </head>
+  <body>
+    <nav class="menu">
+      <ul>
+        <li><a href="home_tab.html">📄 Visualizza tablet</a></li>
+        <li><a href="manage_tab.html">🛠️ Manutenzione</a></li>
+        <li><a href="index.html">🔙 Home</a></li>
+      </ul>
+    </nav>
+  
+    <h2>📝 Inserisci nuovo Tablet</h2>
+  
+    <form id="tabletForm">
+      <div>
+        <label>Codice</label>
+        <input type="text" name="codice" required>
+      </div>
+      <div>
+        <label>Marca</label>
+        <select name="marca"></select>
+      </div>
+  
+      <div>
+        <label>Nome</label>
+        <input type="text" name="nome">
+      </div>
+      <div>
+        <label>Tipo</label>
+        <select name="tipo"></select>
+      </div>
+      <div>
+        <label>Pollici</label>
+        <select name="pollici"></select>
+      </div>
+      <div>
+        <label>RAM</label>
+        <select name="ram"></select>
+      </div>
+      <div>
+        <label>SSD</label>
+        <select name="ssd"></select>
+      </div>
+      <div>
+        <label>Volantino</label>
+        <select name="volantino"><option>SI</option><option selected>NO</option></select>
+      </div>
+  
+      <div>
+        <label>X</label>
+        <select name="x"><option>SI</option><option selected>NO</option></select>
+      </div>
+      <div>
+        <label>Prezzo</label>
+        <input type="number" name="prezzo" step="any">
+      </div>
+  
+      <div>
+        <label>Expo</label>
+        <select name="expo"><option>SI</option><option selected>NO</option></select>
+      </div>
+      <div>
+        <label>Ivrea no Expo</label>
+        <input type="number" name="ivrea">
+      </div>
+      <div>
+        <label>Sede</label>
+        <input type="number" name="sede">
+      </div>
+      <div class="full-width">
+        <label>Link</label>
+        <input type="text" name="link">
+      </div>
+      <div class="full-width">
+        <label>Note</label>
+        <input type="text" name="note">
+      </div>
+  
+  
+      <button type="submit">💾 Salva</button>
+    </form>
+  
+  
+    <p id="statusMsg" style="margin-top:20px;"></p>
+  
+    <script src="form_tab.js" defer></script>
+  </body>
+  </html>
+  

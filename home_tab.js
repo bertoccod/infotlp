@@ -9,11 +9,21 @@ const firebaseConfig = {
 };
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 const campiDaVisualizzare = ["codice", "marca", "nome", "pollici", "tipo", "ram", "ssd", "prezzo", "ivrea", "sede"];
 let datiCorrenti = null;
+auth.onAuthStateChanged(user => {
+  if (user) {
+    console.log("✅ Utente autenticato:", user.email);
+    inizializzaTablet(); // Tutto il tuo codice qui
+  } else {
+    console.log("❌ Utente NON autenticato. Redirect...");
+    window.location.href = "index.html";
+  }
+});
 
-window.onload = function() {
+function inizializzaTablet() {
   console.log("🚀 JS caricato e DOM pronto");
   visualizzaTablet();
 
@@ -21,20 +31,6 @@ window.onload = function() {
   document.getElementById("btnElimina").addEventListener("click", eliminaRecord);
   document.getElementById("btnAnnulla").addEventListener("click", chiudiOverlay);
   document.getElementById("modificaForm").addEventListener("submit", aggiornaRecord);
-/*
-  document.getElementById("filtriForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const datiFiltri = {};
-    const elementi = e.target.elements;
-    for (let i = 0; i < elementi.length; i++) {
-      const el = elementi[i];
-      if (el.name && el.value !== "") {
-        datiFiltri[el.name] = el.value;
-      }
-    }
-    visualizzaTablet(datiFiltri);
-    document.getElementById("sezioneFiltri").style.display = "none";
-  });*/
   document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
 
 
