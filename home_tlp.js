@@ -178,7 +178,7 @@ async function mostraTabella(docs) {
   let html = `<table class="elenco"><thead><tr><th>Selez.</th>`;
   for (const campo of campiDaVisualizzare) {
     html += `<th>${campo}</th>`;
-    if (campo === "prezzo") html += `<th>Garanzia</th><th>Totale</th>`;
+    if (campo === "prezzo") html += `<th>Garanzia</th><th>Totale</th><th>Gar+Tie</th>`;
   }
   html += `<th>Azioni</th><th>&#x2714</th></tr></thead><tbody>`;
 
@@ -189,6 +189,8 @@ async function mostraTabella(docs) {
     const doc = docs[i];
     const data = doc.data();
     const { garanzia, totale } = risultatiGaranzia[i];
+    let pricegar = parseFloat(data.prezzo) + parseFloat(garanzia.toFixed(2));
+    pricegar = pricegar.toFixed(2);
 
     const gruppoAttuale = data.gruppo;
     if (gruppoAttuale !== ultimoGruppo) {
@@ -206,6 +208,7 @@ async function mostraTabella(docs) {
       if (campo === "prezzo") {
         html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
         html += `<td>${garanzia.toFixed(2)}</td>`;
+        html += `<td>${pricegar}</td>`;
         html += `<td${data.sel === "YES" ? ' class="rigaevid"' : ""}><b>${totale.toFixed(2)}</b></td>`;
       } else if (campo === "ivrea") {
         const classe = data.expo === "SI" ? "inputexpo" : "inputgiacenze";
@@ -240,7 +243,7 @@ async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
     if (garanziaValore<22.5){
       return {
         garanzia: garanziaValore,
-        totale: prezzoSmartphone + garanziaValore
+        totale: prezzoSmartphone + garanziaValore + 40
       };
     } else{
       return {
