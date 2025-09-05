@@ -154,6 +154,8 @@ function visualizzaSmartphone(filtri = {}) {
         if (filtri.prezzoMin && d.prezzo < Number(filtri.prezzoMin)) return false;
         if (FtMaxVal && RealMaxVal > FtMaxVal) return false;
 
+        if (filtri.nome && !((d.nome || "").toLowerCase().includes(filtri.nome.toLowerCase()))) return false;
+        
         return true;
       });
 
@@ -395,6 +397,7 @@ function resetFiltri() {
   document.getElementById("sezioneFiltri").style.display = "none";
   visualizzaSmartphone();
 }
+
 function aggiornaPrezzo(idDoc, event) {
   console.log("aggiorna premuto!");
   const riga = event.target.closest("tr"); // trova la <tr> del bottone cliccato
@@ -421,3 +424,10 @@ function aggiornaPrezzo(idDoc, event) {
   });
 }
 
+//FILTRO VELOCE
+function fastfilter() {
+  const valoreCodice = document.getElementById("fastfilterinput").value.trim().toLowerCase();
+
+  // Imposta solo il filtro codice, gli altri restano vuoti
+  visualizzaSmartphone({ nome: valoreCodice });
+}
