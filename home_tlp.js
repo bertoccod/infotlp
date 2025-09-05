@@ -200,7 +200,8 @@ async function mostraTabella(docs) {
 
     const classeRiga = usaGiallo ? "riga-gialla" : "riga-rosa";
     html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
-    html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')" ${data.sel === "YES" ? "checked" : ""}></td>`;
+    html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}',1)" ${data.selG === "YES" ? "checked" : ""}>`;
+    html += `<input type="checkbox" onclick="evidenzia(this, '${doc.id}',2)" ${data.sel === "YES" ? "checked" : ""}></td>`;
 
     for (const campo of campiDaVisualizzare) {
       const valore = data[campo] || "";
@@ -208,7 +209,7 @@ async function mostraTabella(docs) {
       if (campo === "prezzo") {
         html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
         html += `<td>${garanzia.toFixed(2)}</td>`;
-        html += `<td>${pricegar}</td>`;
+        html += `<td${data.selG === "YES" ? ' class="rigaevid"' : ""}><b>${pricegar}</b></td>`;
         html += `<td${data.sel === "YES" ? ' class="rigaevid"' : ""}><b>${totale.toFixed(2)}</b></td>`;
       } else if (campo === "ivrea") {
         const classe = data.expo === "SI" ? "inputexpo" : "inputgiacenze";
@@ -260,22 +261,38 @@ async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
 }
 
 //EVIDENZIA RIGA
-  function evidenzia(checkbox, idDoc) {
+  function evidenzia(checkbox, idDoc, col) {
     const riga = checkbox.parentNode.parentNode;
-    const cellaDaEvidenziare = riga.cells[15]; // Cambia l'indice per scegliere la colonna
+    let cellaDaEvidenziare;
+    if (col === 1){
+      cellaDaEvidenziare = riga.cells[15]; // Cambia l'indice per scegliere la colonna
 
+    } else {
+      cellaDaEvidenziare = riga.cells[16]; // Cambia l'indice per scegliere la colonna
+    }
+    
     const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
 
     if (checkbox.checked) {
       cellaDaEvidenziare.classList.remove("riga-gialla", "riga-rosa");
       cellaDaEvidenziare.classList.add("rigaevid");
-      db.collection("tlp").doc(idDoc).update({ sel: "YES" });
+      
+      if (col === 1){
+        db.collection("tlp").doc(idDoc).update({ selG: "YES" });
+      } else {
+        db.collection("tlp").doc(idDoc).update({ sel: "YES" });
+      }
+    
     } else {
       cellaDaEvidenziare.classList.remove("rigaevid");
       if (classeOriginale) {
         cellaDaEvidenziare.classList.add(classeOriginale);
       }
-      db.collection("tlp").doc(idDoc).update({ sel: "NO" });
+      if (col === 1){
+        db.collection("tlp").doc(idDoc).update({ selG: "NO" });
+      } else {
+        db.collection("tlp").doc(idDoc).update({ sel: "NO" });
+      }
     }
   }
 
