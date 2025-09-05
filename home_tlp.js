@@ -207,8 +207,12 @@ async function mostraTabella(docs) {
 
     for (const campo of campiDaVisualizzare) {
       const valore = data[campo] || "";
-
-      if (campo === "prezzo") {
+      if (campo === "ram"){
+        html += `<td><b>${data.ram}</b></td>`;
+      } else if (campo === "ssd"){
+          html += `<td><b>${data.ssd}</b></td>`;
+        }
+      else if (campo === "prezzo") {
         html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
         html += `<td>${garanzia.toFixed(2)}</td>`;
         html += `<td${data.selG === "YES" ? ' class="rigaevid"' : ""}><b>${pricegar}</b></td>`;
