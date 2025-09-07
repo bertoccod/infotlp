@@ -47,8 +47,10 @@ function inizializzaSmartphone() {
     document.getElementById("sezioneFiltri").style.display = "none";
   });
   document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
-}
+  document.getElementById("ffmarca").addEventListener("input", ffmarcalo);
+  document.getElementById("ffcpu").addEventListener("input", ffcpulo);
 
+}
 // ✅ CLIC ESTERNO CHIUDE MODALE
   document.getElementById("overlayModifica").addEventListener("click", function(e) {
     const contenuto = document.querySelector(".overlay-content");
@@ -125,10 +127,12 @@ campiBooleani.forEach(campo => {
 
 
 // 🎯 Visualizza smartphone con filtri
-function visualizzaSmartphone(filtri = {}) {
+function visualizzaSmartphone(filtri = {}, soloYES = false) {
+
   db.collection("tlp")
     .orderBy("gruppo", "asc")
     .orderBy("marca", "asc")
+    .orderBy("prezzo", "asc")
     .orderBy("nome", "asc")
     .get()
     .then(snapshot => {
@@ -139,7 +143,7 @@ function visualizzaSmartphone(filtri = {}) {
         const d = doc.data();
 
         // Campi con confronto diretto (select)
-        for (let campo of ["marca","brand", "gruppo", "ram", "ssd", "dualsim", "espandibile", "volantino", "x", "expo"]) {
+        for (let campo of ["brand", "gruppo", "ram", "ssd", "dualsim", "espandibile", "volantino", "x", "expo"]) {
           if (filtri[campo] && d[campo] !== filtri[campo]) return false;
         }
 
@@ -155,7 +159,9 @@ function visualizzaSmartphone(filtri = {}) {
         if (FtMaxVal && RealMaxVal > FtMaxVal) return false;
 
         if (filtri.nome && !((d.nome || "").toLowerCase().includes(filtri.nome.toLowerCase()))) return false;
-        
+        if (filtri.marca && !((d.marca || "").toLowerCase().includes(filtri.marca.toLowerCase()))) return false;
+        if (filtri.cpu && !((d.cpu || "").toLowerCase().includes(filtri.cpu.toLowerCase()))) return false;
+        if (soloYES && d.sel !== "YES" && d.selG !== "YES") return false;
         return true;
       });
 
@@ -166,7 +172,6 @@ function visualizzaSmartphone(filtri = {}) {
     });
 }
 
-
 async function mostraTabella(docs) {
   const risultatiGaranzia = await Promise.all(docs.map(doc => {
     const data = doc.data();
@@ -176,17 +181,9 @@ async function mostraTabella(docs) {
     }
     return Promise.resolve({ garanzia: 0, totale: prezzo + 55 });
   }));
-
-  let html = `<table class="elenco"><thead><tr><th>Selez.</th>`;
-  for (const campo of campiDaVisualizzare) {
-    html += `<th>${campo}</th>`;
-    if (campo === "prezzo") html += `<th>Garanzia</th><th>Totale</th><th>Gar+Tie</th>`;
-  }
-  html += `<th>Azioni</th><th>&#x2714</th></tr></thead><tbody>`;
-
   let ultimoGruppo = null;
   let usaGiallo = true;
-
+  let html=`<table id="tabella">`;
   for (let i = 0; i < docs.length; i++) {
     const doc = docs[i];
     const data = doc.data();
@@ -201,38 +198,30 @@ async function mostraTabella(docs) {
     }
 
     const classeRiga = usaGiallo ? "riga-gialla" : "riga-rosa";
-    html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
-    html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}',1)" ${data.selG === "YES" ? "checked" : ""}>`;
+    html += `<tr class="${classeRiga}" data-classe="${classeRiga}" ondblclick="apriModifica('${doc.id}')">`;
+    html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}',1)" ${data.selG === "YES" ? "checked" : ""}><br>`;
     html += `<input type="checkbox" onclick="evidenzia(this, '${doc.id}',2)" ${data.sel === "YES" ? "checked" : ""}></td>`;
+    html += `<td>${data.marca}`;
+    html += data.brand !== "NO" ? ` (${data.brand})</td>` : "</td>";
+    html += `<td id="tdbig"><b>${data.nome}</b></td>`;
+    html += `<td>${data.pollici}"</td>`;
+    html += `<td style="font-size: 12px;">${data.cpu}</td>`;
+    html += data["5G"] === "SI" ? `<td>5G&emsp;</td>` : `<td>4G&emsp;</td>`;
+    html += `<td id="tdbig"><b>${data.ram}</b>/<b>${data.ssd}&emsp;</b></td>`;
+    html += `<td style="font-size: 12px;">${data.back} MP <br>${data.front} MP</td>`;
+  
+    html += `<td><input name="prezzo" value="${data.prezzo}"></td>`;
+    html += `<td ${data.selG === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${pricegar} €</b></td>`;
+    html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
 
-    for (const campo of campiDaVisualizzare) {
-      const valore = data[campo] || "";
-      if (campo === "ram"){
-        html += `<td><b>${data.ram}</b></td>`;
-      } else if (campo === "ssd"){
-          html += `<td><b>${data.ssd}</b></td>`;
-        }
-      else if (campo === "prezzo") {
-        html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
-        html += `<td>${garanzia.toFixed(2)}</td>`;
-        html += `<td${data.selG === "YES" ? ' class="rigaevid"' : ""}><b>${pricegar}</b></td>`;
-        html += `<td${data.sel === "YES" ? ' class="rigaevid"' : ""}><b>${totale.toFixed(2)}</b></td>`;
-      } else if (campo === "ivrea") {
-        const classe = data.expo === "SI" ? "inputexpo" : "inputgiacenze";
-        html += `<td><input name="${campo}" value="${valore}" class="${classe}"></td>`;
-      } else if (campo === "sede") {
-        html += `<td><input name="${campo}" value="${valore}" class="inputgiacenze"></td>`;
-      } else {
-        html += `<td ondblclick="apriModifica('${doc.id}')">${valore}</td>`;
-      }
-    }
-
-    html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
+    html += `<td><input name="ivrea" value="${data.ivrea}">`;
+    html += `<button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
     html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')" ${data.check === "YES" ? "checked" : ""}></td>`;
-    html += `</tr>`;
-  }
 
-  html += `</tbody></table>`;
+    html += `</tr>`;
+
+  }
+  html+=`</table>`;
   document.getElementById("tabella").innerHTML = html;
 }
 
@@ -257,9 +246,9 @@ async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
         garanzia: garanziaValore,
         totale: prezzoSmartphone + garanziaValore + 25
       };
-      
+
     }
-    
+
   } catch (err) {
     console.error("❌ Errore nel calcolo della garanzia:", err);
     return { garanzia: 0, totale: prezzoSmartphone + 40 };
@@ -267,40 +256,40 @@ async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
 }
 
 //EVIDENZIA RIGA
-  function evidenzia(checkbox, idDoc, col) {
-    const riga = checkbox.parentNode.parentNode;
-    let cellaDaEvidenziare;
+function evidenzia(checkbox, idDoc, col) {
+  const riga = checkbox.parentNode.parentNode;
+  let cellaDaEvidenziare;
+  if (col === 1){
+    cellaDaEvidenziare = riga.cells[9]; // Cambia l'indice per scegliere la colonna
+
+  } else {
+    cellaDaEvidenziare = riga.cells[10]; // Cambia l'indice per scegliere la colonna
+  }
+
+  const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
+
+  if (checkbox.checked) {
+    cellaDaEvidenziare.classList.remove("riga-gialla", "riga-rosa");
+    cellaDaEvidenziare.classList.add("rigaevid");
+
     if (col === 1){
-      cellaDaEvidenziare = riga.cells[15]; // Cambia l'indice per scegliere la colonna
-
+      db.collection("tlp").doc(idDoc).update({ selG: "YES" });
     } else {
-      cellaDaEvidenziare = riga.cells[16]; // Cambia l'indice per scegliere la colonna
+      db.collection("tlp").doc(idDoc).update({ sel: "YES" });
     }
-    
-    const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
 
-    if (checkbox.checked) {
-      cellaDaEvidenziare.classList.remove("riga-gialla", "riga-rosa");
-      cellaDaEvidenziare.classList.add("rigaevid");
-      
-      if (col === 1){
-        db.collection("tlp").doc(idDoc).update({ selG: "YES" });
-      } else {
-        db.collection("tlp").doc(idDoc).update({ sel: "YES" });
-      }
-    
+  } else {
+    cellaDaEvidenziare.classList.remove("rigaevid");
+    if (classeOriginale) {
+      cellaDaEvidenziare.classList.add(classeOriginale);
+    }
+    if (col === 1){
+      db.collection("tlp").doc(idDoc).update({ selG: "NO" });
     } else {
-      cellaDaEvidenziare.classList.remove("rigaevid");
-      if (classeOriginale) {
-        cellaDaEvidenziare.classList.add(classeOriginale);
-      }
-      if (col === 1){
-        db.collection("tlp").doc(idDoc).update({ selG: "NO" });
-      } else {
-        db.collection("tlp").doc(idDoc).update({ sel: "NO" });
-      }
+      db.collection("tlp").doc(idDoc).update({ sel: "NO" });
     }
   }
+}
 
 
 //SPUNTALO
@@ -312,10 +301,6 @@ function spuntalo(checkbox, idDoc) {
     db.collection("tlp").doc(idDoc).update({ check: "NO" });
   }
 }
-
-
-
-
 
 // 🛠️ Apri overlay
 function apriModifica(idDoc) {
@@ -431,7 +416,55 @@ function aggiornaPrezzo(idDoc, event) {
 //FILTRO VELOCE
 function fastfilter() {
   const valoreCodice = document.getElementById("fastfilterinput").value.trim().toLowerCase();
-
-  // Imposta solo il filtro codice, gli altri restano vuoti
   visualizzaSmartphone({ nome: valoreCodice });
 }
+function ffmarcalo() {
+  const valoreCodice = document.getElementById("ffmarca").value.trim().toLowerCase();
+  visualizzaSmartphone({ marca: valoreCodice });
+}
+function ffcpulo() {
+  const valoreCodice = document.getElementById("ffcpu").value.trim().toLowerCase();
+  visualizzaSmartphone({ cpu: valoreCodice });
+}
+
+function delsel() {
+  db.collection("tlp").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ sel: "NO", selG: "NO" });
+    });
+
+    Promise.all(aggiornamenti).then(() => {
+      visualizzaSmartphone(); // ✅ Ora parte al momento giusto
+    });
+  });
+}
+
+
+function delspunte() {
+  db.collection("tlp").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ check: "NO" });
+    });
+
+    Promise.all(aggiornamenti).then(() => {
+      visualizzaSmartphone();
+    });
+  });
+}
+function filtraSoloYES() {
+  db.collection("tlp").get().then(snapshot => {
+    const filtrati = snapshot.docs
+      .map(doc => doc.data())
+      .filter(d => d.sel === "YES" || d.selG === "YES")
+      .sort((a, b) => {
+        if (a.gruppo < b.gruppo) return -1;
+        if (a.gruppo > b.gruppo) return 1;
+        return 0;
+      });
+
+    mostraTabella(filtrati);
+  }).catch(err => {
+    console.error("❌ Errore nel filtro YES:", err.message);
+  });
+}
+

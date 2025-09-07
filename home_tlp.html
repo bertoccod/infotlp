@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Smartphone</title>
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="home_tlp.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -54,13 +54,24 @@
           <button class="buttfiltri" type="button" onclick="resetFiltri()">🔄 Reset</button>
         </form>
       </div>
-  <div class="fastfiltero">
-    <div class = "fast">
-      <b>Nome:</b>
-      <input id="fastfilterinput" type="text" placeholder="Filtro veloce">    </input></div>
-    </div>
+  <table id="tablefilter">
+    <thead>
+      <tr>
+        <th><a href="#" onclick="delsel()" id="ff">&#x1F9F9 Elimina selez.</a></th>
+        <th><input id="ffmarca" type="text" placeholder="Marca telefono" /></th>
+        
+        <th><input id="fastfilterinput" type="text" placeholder="Nome telefono" /></th>
+        <th><input id="ffcpu" type="text" placeholder="Processore"/></th>
+        <th><a href="#" onclick="visualizzaSmartphone({}, true)" id="ff">🗹 Solo Selez.</a></th>
+        <!--<th><button onclick="visualizzaSmartphone({}, true)" class="buttfiltri">🗹 Solo Selez.</button></th>-->
+
+
+        <th><a href="#" onclick="delspunte()" id="ff">&#x1f504 Elimina spunte</a></th>
+      </tr>
+    </thead>
+  </table>
   <div id="tabella"></div>
-    <div id="overlayModifica" class="overlay" style="display:none;">
+  <div id="overlayModifica" class="overlay" style="display:none;">
     <div class="overlay-content">
       <h3>🛠️ Modifica Smartphone</h3>
       <form id="modificaForm">
@@ -100,6 +111,5 @@
     </div>
   </div>
   <script src="home_tlp.js" defer></script>
-</body>
-
-</html>
+  </body>
+  </html>
