@@ -10,7 +10,6 @@ const firebaseConfig = {
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
-
 const campiDaVisualizzare = ["codice", "marca", "nome", "pollici", "tipo", "ram", "ssd", "prezzo", "ivrea", "sede"];
 let datiCorrenti = null;
 auth.onAuthStateChanged(user => {
@@ -109,7 +108,7 @@ campiBooleani.forEach(campo => {
 
 
 // 🎯 Visualizza notebook con filtri
-function visualizzaTablet(filtri = {}) {
+function visualizzaTablet(filtri = {}, soloYES = false) {
   db.collection("tab")
     .orderBy("tipo", "asc")
     .get()
@@ -144,7 +143,7 @@ function visualizzaTablet(filtri = {}) {
         if (filtri.cpu2 && filtri.cpu) {
           if (d.cpu !== filtri.cpu && d.cpu !== filtri.cpu2) return false;
         }
-
+        if (soloYES && d.sel !== "YES") return false;
         return true;
       });
 
@@ -154,7 +153,6 @@ function visualizzaTablet(filtri = {}) {
       console.error("❌ Errore nella visualizzazione:", err.message);
     });
 }
-
 async function mostraTabella(docs) {
   const risultatiGaranzia = await Promise.all(docs.map(doc => {
     const data = doc.data();
@@ -164,16 +162,9 @@ async function mostraTabella(docs) {
     }
     return Promise.resolve({ garanzia: 0, totale: prezzo + 55 });
   }));
-
-  let html = `<table class="elenco"><thead><tr><th>Selez.</th>`;
-  for (const campo of campiDaVisualizzare) {
-    html += `<th>${campo}</th>`;
-    if (campo === "prezzo") html += `<th>Garanzia</th><th>Totale</th>`;
-  }
-  html += `<th>Azioni</th><th>&#x2714</th></tr></thead><tbody>`;
-
   let ultimoGruppo = null;
   let usaGiallo = true;
+  let html=`<table id="tabella">`;
 
   for (let i = 0; i < docs.length; i++) {
     const doc = docs[i];
@@ -189,35 +180,30 @@ async function mostraTabella(docs) {
     const classeRiga = usaGiallo ? "riga-gialla" : "riga-rosa";
     html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
     html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')" ${data.sel === "YES" ? "checked" : ""}></td>`;
-
-    for (const campo of campiDaVisualizzare) {
-      const valore = data[campo] || "";
-
-      if (campo === "prezzo") {
-        html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
-        html += `<td>${garanzia.toFixed(2)}</td>`;
-        html += `<td${data.sel === "YES" ? ' class="rigaevid"' : ""}><b>${totale.toFixed(2)}</b></td>`;
-      } else if (campo === "ivrea") {
-        const classe = data.expo === "SI" ? "inputexpo" : "inputgiacenze";
-        html += `<td><input name="${campo}" value="${valore}" class="${classe}"></td>`;
-      } else if (campo === "sede") {
-        html += `<td><input name="${campo}" value="${valore}" class="inputgiacenze"></td>`;
-      } else if (campo === "codice") {
-        html += `<td>${valore}</td>`;
-      } else {
-        html += `<td ondblclick="apriModifica('${doc.id}')">${valore}</td>`;
-      }
+    html += `<td>${data.codice}</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')">${data.marca}</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')">${data.nome}</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')">${data.pollici}"</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')"><b>${data.tipo}</b></td>`;
+    html += `<td id="tdbig" ondblclick="apriModifica('${doc.id}')"><b>${data.ram}/${data.ssd}</b></td>`;
+    if (data.x === "SI"){
+      html += `<td>&#10060;</td>`;
+    } else {
+      html += `<td>-</td>`;
     }
-
+    html += `<td><input name="prezzo" value="${data.prezzo}" class="stdinp"></td>`;
+    html += `<td>${garanzia.toFixed(2)}</td>`;
+    html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
+    const classe = data.expo === "SI" ? "inputexpo" : "stdinp";
+    html += `<td><input name="ivrea" value="${data.ivrea}" class="${classe}"></td>`;
+    html += `<td><input name="sede" value="${data.sede}" class="stdinp"></td>`;
     html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
     html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')" ${data.check === "YES" ? "checked" : ""}></td>`;
     html += `</tr>`;
   }
-
-  html += `</tbody></table>`;
+  html+=`</table>`;
   document.getElementById("tabella").innerHTML = html;
 }
-
 async function calcolaGaranziaEsatta(marca, prezzoTablet) {
   try {
     // 1️⃣ Recupera il documento "gruppi" per trovare la lettera del gruppo associato alla marca
@@ -353,21 +339,13 @@ function eliminaRecord() {
   }
 }
 
-// 🔁 Toggle sezione filtri
-function toggleFiltri() {
-  const sezione = document.getElementById("sezioneFiltri");
-  sezione.style.display = sezione.style.display === "none" ? "block" : "none";
-}
-
 // 🧹 Reset filtri
 function resetFiltri() {
-  document.getElementById("filtriForm").reset();
-  document.getElementById("sezioneFiltri").style.display = "none";
   visualizzaTablet();
 }
+
 function aggiornaPrezzo(idDoc, event) {
-  console.log("aggiorna premuto!");
-  const riga = event.target.closest("tr"); // trova la <tr> del bottone cliccato
+  const riga = event.target.closest("tr");
   const prezzoInput = riga.querySelector('input[name="prezzo"]');
   const ivreaInput = riga.querySelector('input[name="ivrea"]');
   const sedeInput = riga.querySelector('input[name="sede"]');
@@ -404,6 +382,43 @@ console.log(valoreCodice);
   visualizzaTablet({ codice: valoreCodice });
 }
 
+function delsel() {
+  db.collection("tab").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ sel: "NO"});
+    });
+
+    Promise.all(aggiornamenti).then(() => {
+      visualizzaTablet();
+    });
+  });
+}
 
 
+function delspunte() {
+  db.collection("tab").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ check: "NO" });
+    });
 
+    Promise.all(aggiornamenti).then(() => {
+        visualizzaTablet();
+    });
+  });
+}
+function filtraSoloYES() {
+  db.collection("tab").get().then(snapshot => {
+    const filtrati = snapshot.docs
+      .map(doc => doc.data())
+      .filter(d => d.sel === "YES")
+      .sort((a, b) => {
+        if (a.gruppo < b.gruppo) return -1;
+        if (a.gruppo > b.gruppo) return 1;
+        return 0;
+      });
+
+    mostraTabella(filtrati);
+  }).catch(err => {
+    console.error("❌ Errore nel filtro YES:", err.message);
+  });
+}

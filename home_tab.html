@@ -1,70 +1,76 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
   <title>Tablet</title>
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="home_tab.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
+  <body>
+    <nav class="menu">
+      <ul>
+        <li><a href="home_nbk.html">Notebook</a></li>
+        <li><a href="home_tab.html">Tablet</a></li>
+        <li><a href="home_tlp.html">Smartphone</a></li>
+        <li><a href="index.html">🔙 Esci</a></li>
+      </ul>
+    </nav>
+    <nav class="menu">
+      <ul>
+        <li><a href="form_tab.html">📄 Inserisci nuovo tablet</a></li>
+        <li><a href="manage_tab.html">🛠️ Manutenzione</a></li>
+      </ul>
+    </nav>
+    <table id="tablefilter">
+      <thead>
+        <tr>
+          <th><a href="#" onclick="delsel()" id="ff">&#x1F9F9 Elimina selez.</a></th>
 
-<body>
-  <nav class="menu">
-    <ul>
-      <li><a href="home_nbk.html">Notebook</a></li>
-      <li><a href="home_tab.html">Tablet</a></li>
-      <li><a href="home_tlp.html">Smartphone</a></li>
-      <li><a href="index.html">🔙 Esci</a></li>
-    </ul>
-  </nav>
-  <nav class="menu">
-    <ul>
-      <li><a href="form_tab.html">📄 Inserisci nuovo tablet</a></li>
-      <li><a href="manage_tab.html">🛠️ Manutenzione</a></li>
-    </ul>
-  </nav>
-  <div class="fastfiltero">
-    <b>Codice AS400:</b>
-    <input id="fastfilterinput" type="text" placeholder="Filtro veloce">    </input>
-  </div>
-  <div id="tabella"></div>
-    <div id="overlayModifica" class="overlay" style="display:none;">
-    <div class="overlay-content">
-      <h3>🛠️ Modifica Tablet</h3>
-      <form id="modificaForm">
-        <div class="griglia-edit">
-          <div><label>Codice</label><input type="text" name="codice" disabled></div>
-          <div><label>Marca</label><select name="marca" disabled></select></div>
-          <div><label>Nome</label><input type="text" name="nome" disabled></div>
-          <div><label>Pollici</label><select name="pollici" disabled></select></div>
-          <div><label>Tipo</label><select name="tipo" disabled></select></div>       
-          <div><label>RAM</label><select name="ram" disabled></select></div>
-          <div><label>SSD</label><select name="ssd" disabled></select></div>
-          <div><label>Volantino</label><select name="volantino" disabled></select></div>
-          <div><label>X</label><select name="x" disabled></select></div>
-          <div><label>Prezzo</label><input type="number" name="prezzo" step="any" disabled></div>
-          <div><label>Expo</label><select name="expo" disabled></select></div>
-          <div><label>Ivrea</label><input type="text" name="ivrea" disabled></div>
-          <div><label>Sede</label><input type="text" name="sede" disabled></div>
-          <div class="full-width"><label>Link</label><input type="text" name="link" disabled></div>
-          <div class="full-width"><label>Note</label><input type="text" name="note" disabled></div>
-          
-        </div>
+          <th><input id="fastfilterinput" type="text" placeholder="Codice AS400" /></th>
+          <th><a href="#" onclick="visualizzaTablet({}, true)" id="ff">🗹 Solo Selez.</a></th>
+          <th><a href="#" onclick="resetFiltri()" id="ff">&#x2601 RESET</a></th>
+          <th><a href="#" onclick="delspunte()" id="ff">&#x1f504 Elimina spunte</a></th>
+        </tr>
+      </thead>
+    </table>
+    <div id="tabella"></div>
+      <div id="overlayModifica" class="overlay" style="display:none;">
+      <div class="overlay-content">
+        <h3>🛠️ Modifica Tablet</h3>
+        <form id="modificaForm">
+          <div class="griglia-edit">
+            <div><label>Codice</label><input type="text" name="codice" disabled></div>
+            <div><label>Marca</label><select name="marca" disabled></select></div>
+            <div><label>Nome</label><input type="text" name="nome" disabled></div>
+            <div><label>Pollici</label><select name="pollici" disabled></select></div>
+            <div><label>Tipo</label><select name="tipo" disabled></select></div>       
+            <div><label>RAM</label><select name="ram" disabled></select></div>
+            <div><label>SSD</label><select name="ssd" disabled></select></div>
+            <div><label>Volantino</label><select name="volantino" disabled></select></div>
+            <div><label>X</label><select name="x" disabled></select></div>
+            <div><label>Prezzo</label><input type="number" name="prezzo" step="any" disabled></div>
+            <div><label>Expo</label><select name="expo" disabled></select></div>
+            <div><label>Ivrea</label><input type="text" name="ivrea" disabled></div>
+            <div><label>Sede</label><input type="text" name="sede" disabled></div>
+            <div class="full-width"><label>Link</label><input type="text" name="link" disabled></div>
+            <div class="full-width"><label>Note</label><input type="text" name="note" disabled></div>
 
-        <div class="edit-buttons">
-          <button type="button" id="btnModifica">✏️ Modifica</button>
-          <button type="submit" id="btnAggiorna">✅ Aggiorna</button>
-          <button type="button" id="btnElimina">🗑️ Elimina</button>
-          <button type="button" id="btnAnnulla">❌ Annulla</button>
-        </div>
+          </div>
 
-        <p id="msgStato" style="text-align:center;"></p>
-      </form>
+          <div class="edit-buttons">
+            <button type="button" id="btnModifica">✏️ Modifica</button>
+            <button type="submit" id="btnAggiorna">✅ Aggiorna</button>
+            <button type="button" id="btnElimina">🗑️ Elimina</button>
+            <button type="button" id="btnAnnulla">❌ Annulla</button>
+          </div>
+
+          <p id="msgStato" style="text-align:center;"></p>
+        </form>
+      </div>
     </div>
-  </div>
-  <script src="home_tab.js" defer></script>
-</body>
+    <script src="home_tab.js" defer></script>
+    </body>
 
-</html>
+    </html>
