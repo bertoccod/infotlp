@@ -26,47 +26,41 @@ auth.onAuthStateChanged(user => {
 });
 
 function inizializzaNotebook(){
-
-  //window.onload = function() {
-    console.log("🚀 JS caricato e DOM pronto");
-    visualizzaNotebook();
-
-    document.getElementById("btnModifica").addEventListener("click", abilitaModifica);
-    document.getElementById("btnElimina").addEventListener("click", eliminaRecord);
-    document.getElementById("btnAnnulla").addEventListener("click", chiudiOverlay);
-    document.getElementById("modificaForm").addEventListener("submit", aggiornaRecord);
-
-    document.getElementById("filtriForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const datiFiltri = {};
-      const elementi = e.target.elements;
-      for (let i = 0; i < elementi.length; i++) {
-        const el = elementi[i];
-        if (el.name && el.value !== "") {
-          datiFiltri[el.name] = el.value;
-        }
+  console.log("🚀 JS caricato e DOM pronto");
+  visualizzaNotebook();
+  document.getElementById("btnModifica").addEventListener("click", abilitaModifica);
+  document.getElementById("btnElimina").addEventListener("click", eliminaRecord);
+  document.getElementById("btnAnnulla").addEventListener("click", chiudiOverlay);
+  document.getElementById("modificaForm").addEventListener("submit", aggiornaRecord);
+  document.getElementById("filtriForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const datiFiltri = {};
+    const elementi = e.target.elements;
+    for (let i = 0; i < elementi.length; i++) {
+      const el = elementi[i];
+      if (el.name && el.value !== "") {
+        datiFiltri[el.name] = el.value;
       }
-      visualizzaNotebook(datiFiltri);
-      document.getElementById("sezioneFiltri").style.display = "none";
-    });
-    document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
+    }
+    visualizzaNotebook(datiFiltri);
+    document.getElementById("sezioneFiltri").style.display = "none";
+  });
+  document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
 
 
-    // ✅ CLIC ESTERNO CHIUDE MODALE
-    document.getElementById("overlayModifica").addEventListener("click", function(e) {
-      const contenuto = document.querySelector(".overlay-content");
-      if (!contenuto.contains(e.target)) {
-        chiudiOverlay();
-      }
-    });
- // }
-
-
+  // ✅ CLIC ESTERNO CHIUDE MODALE
+  document.getElementById("overlayModifica").addEventListener("click", function(e) {
+    const contenuto = document.querySelector(".overlay-content");
+    if (!contenuto.contains(e.target)) {
+      chiudiOverlay();
+    }
+  });
   // Popola select campi filtrabili
   const campiFiltrabili = [
     "marca", "pollici", "cpu", "gruppo", "gpu", "ram", "ssd",
     "sistemaoperativo", "webcam"
   ];
+
   const campiBooleani = [
     "evo","game", "touch", "retroilluminazione", "RJ45", "cardReader",
     "volantino", "expo", "x"
@@ -143,16 +137,10 @@ function inizializzaNotebook(){
       });
     }
   });
-
-
 }
 
-
-
-
-
 // 🎯 Visualizza notebook con filtri
-function visualizzaNotebook(filtri = {}) {
+function visualizzaNotebook(filtri = {}, soloYES = false) {
   db.collection("nbk")
     .orderBy("gruppo", "asc")
     .get()
@@ -178,15 +166,13 @@ function visualizzaNotebook(filtri = {}) {
 
         if (filtri.prezzoMin && d.prezzo < Number(filtri.prezzoMin)) return false;
         if (FtMaxVal && RealMaxVal > FtMaxVal) return false;
-        
+
         // Filtro veloce gruppi
         if (filtri.gruppi && filtri.gruppi.length > 0) {
             if (!filtri.gruppi.includes(d.gruppo)) {
                 return false;
             }
         }
-
-
         // 🔎 Codice contiene
         if (filtri.codice && !((d.codice || "").toLowerCase().includes(filtri.codice.toLowerCase()))) return false;
 
@@ -194,7 +180,7 @@ function visualizzaNotebook(filtri = {}) {
         if (filtri.cpu2 && filtri.cpu) {
           if (d.cpu !== filtri.cpu && d.cpu !== filtri.cpu2) return false;
         }
-
+        if (soloYES && d.sel !== "YES") return false;
         return true;
       });
 
@@ -214,16 +200,9 @@ async function mostraTabella(docs) {
     }
     return Promise.resolve({ garanzia: 0, totale: prezzo + 55 });
   }));
-
-  let html = `<table class="elenco"><thead><tr><th>Selez.</th>`;
-  for (const campo of campiDaVisualizzare) {
-    html += `<th>${campo}</th>`;
-    if (campo === "prezzo") html += `<th>Garanzia</th><th>Totale</th>`;
-  }
-  html += `<th>Azioni</th><th>&#x2714</th></tr></thead><tbody>`;
-
   let ultimoGruppo = null;
   let usaGiallo = true;
+  let html=`<table id="tabella">`;
 
   for (let i = 0; i < docs.length; i++) {
     const doc = docs[i];
@@ -239,34 +218,32 @@ async function mostraTabella(docs) {
     const classeRiga = usaGiallo ? "riga-gialla" : "riga-rosa";
     html += `<tr class="${classeRiga}" data-classe="${classeRiga}">`;
     html += `<td><input type="checkbox" onclick="evidenzia(this, '${doc.id}')" ${data.sel === "YES" ? "checked" : ""}></td>`;
-
-    for (const campo of campiDaVisualizzare) {
-      const valore = data[campo] || "";
-
-      if (campo === "prezzo") {
-        html += `<td><input name="${campo}" value="${valore}" class="inputprezzo"></td>`;
-        html += `<td>${garanzia.toFixed(2)}</td>`;
-        html += `<td${data.sel === "YES" ? ' class="rigaevid"' : ""}><b>${totale.toFixed(2)}</b></td>`;
-      } else if (campo === "ivrea") {
-        const classe = data.expo === "SI" ? "inputexpo" : "inputgiacenze";
-        html += `<td><input name="${campo}" value="${valore}" class="${classe}"></td>`;
-      } else if (campo === "sede") {
-        html += `<td><input name="${campo}" value="${valore}" class="inputgiacenze"></td>`;
-      } else if (campo === "codice") {
-        html += `<td>${valore}</td>`;
-      } else {
-        html += `<td ondblclick="apriModifica('${doc.id}')">${valore}</td>`;
-      }
+    html += `<td>${data.codice}</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')">${data.marca}</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')">${data.nome}</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')"><b>${data.pollici}"</b></td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')"><b>${data.cpu}</b> (${data.generazione})</td>`;
+    html += `<td ondblclick="apriModifica('${doc.id}')">${data.gpu}</td>`;
+    html += `<td id="tdbig" ondblclick="apriModifica('${doc.id}')"><b>${data.ram}/${data.ssd}</b></td>`;
+    if (data.x === "SI"){
+      html += `<td>&#10060;</td>`;
+    } else {
+      html += `<td>-</td>`;
     }
-
+    html += `<td><input name="prezzo" value="${data.prezzo}" class="stdinp"></td>`;
+    html += `<td>${garanzia.toFixed(2)}</td>`;
+    html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
+    const classe = data.expo === "SI" ? "inputexpo" : "stdinp";
+    html += `<td><input name="ivrea" value="${data.ivrea}" class="${classe}"></td>`;
+    html += `<td><input name="sede" value="${data.sede}" class="stdinp"></td>`;
     html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
     html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')" ${data.check === "YES" ? "checked" : ""}></td>`;
     html += `</tr>`;
   }
-
-  html += `</tbody></table>`;
+  html+=`</table>`;
   document.getElementById("tabella").innerHTML = html;
 }
+
 
 async function calcolaGaranziaEsatta(marca, prezzoNotebook) {
   try {
@@ -301,24 +278,24 @@ async function calcolaGaranziaEsatta(marca, prezzoNotebook) {
 }
 
 //EVIDENZIA RIGA
-  function evidenzia(checkbox, idDoc) {
-    const riga = checkbox.parentNode.parentNode;
-    const cellaDaEvidenziare = riga.cells[12]; // Cambia l'indice per scegliere la colonna
+function evidenzia(checkbox, idDoc) {
+  const riga = checkbox.parentNode.parentNode;
+  const cellaDaEvidenziare = riga.cells[11]; // Cambia l'indice per scegliere la colonna
 
-    const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
+  const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
 
-    if (checkbox.checked) {
-      cellaDaEvidenziare.classList.remove("riga-gialla", "riga-rosa");
-      cellaDaEvidenziare.classList.add("rigaevid");
-      db.collection("nbk").doc(idDoc).update({ sel: "YES" });
-    } else {
-      cellaDaEvidenziare.classList.remove("rigaevid");
-      if (classeOriginale) {
-        cellaDaEvidenziare.classList.add(classeOriginale);
-      }
-      db.collection("nbk").doc(idDoc).update({ sel: "NO" });
+  if (checkbox.checked) {
+    cellaDaEvidenziare.classList.remove("riga-gialla", "riga-rosa");
+    cellaDaEvidenziare.classList.add("rigaevid");
+    db.collection("nbk").doc(idDoc).update({ sel: "YES" });
+  } else {
+    cellaDaEvidenziare.classList.remove("rigaevid");
+    if (classeOriginale) {
+      cellaDaEvidenziare.classList.add(classeOriginale);
     }
+    db.collection("nbk").doc(idDoc).update({ sel: "NO" });
   }
+}
 
 
 //SPUNTALO
@@ -330,9 +307,6 @@ function spuntalo(checkbox, idDoc) {
     db.collection("nbk").doc(idDoc).update({ check: "NO" });
   }
 }
-
-
-
 
 
 // 🛠️ Apri overlay
@@ -452,8 +426,6 @@ function aggiornaPrezzo(idDoc, event) {
 //FILTRO VELOCE
 function fastfilter() {
   const valoreCodice = document.getElementById("fastfilterinput").value.trim().toLowerCase();
-
-  // Imposta solo il filtro codice, gli altri restano vuoti
   visualizzaNotebook({ codice: valoreCodice });
 }
 
@@ -461,10 +433,10 @@ function fastfilter() {
 
   function pronti() {
     filtroIvreaAttivo = !filtroIvreaAttivo;
-    
+
     const bottone = document.getElementById("btnFiltroIvrea");
     bottone.textContent = filtroIvreaAttivo ? "🔍 Mostra tutti" : "🔍 Nbk Imballo chiuso";
-    
+
     db.collection("nbk")
       .orderBy("gruppo", "asc")
       .get()
@@ -485,13 +457,43 @@ function fastfilter() {
       });
   }
 
-function filtraPerGruppo() {
-    const gruppiSelezionati = [];
-    document.querySelectorAll('input[name="gruppoFilter"]:checked').forEach(checkbox => {
-        gruppiSelezionati.push(checkbox.value);
+function delsel() {
+  db.collection("nbk").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ sel: "NO"});
     });
 
-    // Se nessun gruppo è selezionato, mostriamo tutti i notebook.
-    // Altrimenti, filtriamo per i gruppi selezionati.
-    visualizzaNotebook({ gruppi: gruppiSelezionati });
+    Promise.all(aggiornamenti).then(() => {
+      visualizzaNotebook(); // ✅ Ora parte al momento giusto
+    });
+  });
+}
+
+
+function delspunte() {
+  db.collection("nbk").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ check: "NO" });
+    });
+
+    Promise.all(aggiornamenti).then(() => {
+      visualizzaNotebook();
+    });
+  });
+}
+function filtraSoloYES() {
+  db.collection("nbk").get().then(snapshot => {
+    const filtrati = snapshot.docs
+      .map(doc => doc.data())
+      .filter(d => d.sel === "YES")
+      .sort((a, b) => {
+        if (a.gruppo < b.gruppo) return -1;
+        if (a.gruppo > b.gruppo) return 1;
+        return 0;
+      });
+
+    mostraTabella(filtrati);
+  }).catch(err => {
+    console.error("❌ Errore nel filtro YES:", err.message);
+  });
 }

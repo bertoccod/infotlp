@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Notebook</title>
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="home_nbk.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -26,63 +26,50 @@
   </nav>
   <button class="buttfiltri" onclick="toggleFiltri()">🔍 Mostra filtri</button>
 
-      <div id="sezioneFiltri" style="display:none; margin-top:20px;">
-        <form id="filtriForm">
-          <div class="griglia-filtri">
-            <div style="grid-column: span 2;">
-              <label>Codice</label>
-              <input type="text" name="codice">
-            </div>
+  <div id="sezioneFiltri" style="display:none; margin-top:20px;">
+    <form id="filtriForm">
+      <div class="griglia-filtri">
+        <div style="grid-column: span 2;">
+          <label>Codice</label>
+          <input type="text" name="codice">
+        </div>
 
-            <div><label>Marca</label><select name="marca"></select></div>
-            <div><label>Pollici</label><select name="pollici"></select></div>
-            <div><label>CPU</label><select name="cpu"></select></div>
-            <div><label>CPU 2</label><select name="cpu2"></select></div>
-            <div><label>RAM</label><select name="ram"></select></div>
-            <div><label>SSD</label><select name="ssd"></select></div>
-            <div><label>GPU</label><select name="gpu"></select></div>
-            <div><label>Gaming</label><select name="game"><option></option><option>SI</option><option>NO</option></select></div>
-            <div><label>Retroilluminazione</label><select name="retroilluminazione"><option></option><option>SI</option><option>NO</option></select></div>
-            <div><label>RJ45</label><select name="RJ45"><option></option><option>SI</option><option>NO</option></select></div>
-            <div><label>Card Reader</label><select name="cardReader"><option></option><option>SI</option><option>NO</option></select></div>
-            <div><label>Volantino</label><select name="volantino"><option></option><option>SI</option><option>NO</option></select></div>
-            <div><label>Expo</label><select name="expo"><option></option><option>SI</option><option>NO</option></select></div>
-            <div><label>Prezzo minimo</label><input type="number" name="prezzoMin" step="any" min="0"></div>
-            <div><label>Prezzo massimo</label><input type="number" name="prezzoMax" step="any" min="0"></div>
-          </div>
-          <br>
-          <button class="buttfiltri" type="submit">🧮 Applica filtri</button>
-          <button class="buttfiltri" type="button" onclick="resetFiltri()">🔄 Reset</button>
-        </form>
+        <div><label>Marca</label><select name="marca"></select></div>
+        <div><label>Pollici</label><select name="pollici"></select></div>
+        <div><label>CPU</label><select name="cpu"></select></div>
+        <div><label>CPU 2</label><select name="cpu2"></select></div>
+        <div><label>RAM</label><select name="ram"></select></div>
+        <div><label>SSD</label><select name="ssd"></select></div>
+        <div><label>GPU</label><select name="gpu"></select></div>
+        <div><label>Gaming</label><select name="game"><option></option><option>SI</option><option>NO</option></select></div>
+        <div><label>Retroilluminazione</label><select name="retroilluminazione"><option></option><option>SI</option><option>NO</option></select></div>
+        <div><label>RJ45</label><select name="RJ45"><option></option><option>SI</option><option>NO</option></select></div>
+        <div><label>Card Reader</label><select name="cardReader"><option></option><option>SI</option><option>NO</option></select></div>
+        <div><label>Volantino</label><select name="volantino"><option></option><option>SI</option><option>NO</option></select></div>
+        <div><label>Expo</label><select name="expo"><option></option><option>SI</option><option>NO</option></select></div>
+        <div><label>Prezzo minimo</label><input type="number" name="prezzoMin" step="any" min="0"></div>
+        <div><label>Prezzo massimo</label><input type="number" name="prezzoMax" step="any" min="0"></div>
       </div>
-  <div class="fastfiltero">
-    <div class = "fast">
-      <b>Codice AS400:</b>
-      <input id="fastfilterinput" type="text" placeholder="Filtro veloce"></input>
-      <button onclick="pronti()" id="btnFiltroIvrea">🔍 Nbk imballo chiuso</button>
-    </div>
-      <div class="filtri-gruppi-container">
-          <b>Filtra per gruppo:</b>
-          <div class="filtro-singolo">
-              <input type="checkbox" id="gruppo1" name="gruppoFilter" value="3_i3/R3-15">
-              <label for="gruppo1">3</label>
-          </div>
-
-          <div class="filtro-singolo">
-              <input type="checkbox" id="gruppo2" name="gruppoFilter" value="5_i5/R5-15">
-              <label for="gruppo2">5</label>
-          </div>
-
-          <div class="filtro-singolo">
-              <input type="checkbox" id="gruppo3" name="gruppoFilter" value="6_i7/R7-15">
-              <label for="gruppo3">7</label>
-          </div>
-
-          <button onclick="filtraPerGruppo()">Applica Filtri</button>
-      </div>
+      <br>
+      <button class="buttfiltri" type="submit">🧮 Applica filtri</button>
+      <button class="buttfiltri" type="button" onclick="resetFiltri()">🔄 Reset</button>
+    </form>
   </div>
+  <table id="tablefilter">
+    <thead>
+      <tr>
+        <th><a href="#" onclick="delsel()" id="ff">&#x1F9F9 Elimina selez.</a></th>
+        
+        <th><input id="fastfilterinput" type="text" placeholder="Codice AS400" /></th>
+        <th><a href="#" onclick="visualizzaNotebook({}, true)" id="ff">🗹 Solo Selez.</a></th>
+        <th><a href="#" onclick="pronti()" id="btnFiltroIvrea">🔍 Nbk imballo chiuso</a></th>
+        <th><a href="#" onclick="resetFiltri()" id="ff">&#x2601 RESET</a></th>
+        <th><a href="#" onclick="delspunte()" id="ff">&#x1f504 Elimina spunte</a></th>
+      </tr>
+    </thead>
+  </table>
   <div id="tabella"></div>
-    <div id="overlayModifica" class="overlay" style="display:none;">
+  <div id="overlayModifica" class="overlay" style="display:none;">
     <div class="overlay-content">
       <h3>🛠️ Modifica Notebook</h3>
       <form id="modificaForm">
@@ -117,7 +104,6 @@
           <div><label>Sede</label><input type="text" name="sede" disabled></div>
           <div class="full-width"><label>Link</label><input type="text" name="link" disabled></div>
           <div class="full-width"><label>Note</label><input type="text" name="note" disabled></div>
-          
         </div>
 
         <div class="edit-buttons">
@@ -126,12 +112,10 @@
           <button type="button" id="btnElimina">🗑️ Elimina</button>
           <button type="button" id="btnAnnulla">❌ Annulla</button>
         </div>
-
         <p id="msgStato" style="text-align:center;"></p>
       </form>
     </div>
   </div>
   <script src="home_nbk.js" defer></script>
 </body>
-
 </html>

@@ -1,0 +1,234 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 0px;
+  background-color: #f0f0f0;
+}
+/*--MENU--*/
+.menu {
+  background-color: #ffffff;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  max-width: 100%;
+}
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.menu li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.menu li a:hover {
+  color: #0077cc;
+}
+
+/*--FILTRI--*/
+.buttfiltri {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.griglia-filtri {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px 20px;
+  /*max-width: 100%;*/
+  width: 80vw;
+  margin: 0 auto;
+}
+.griglia-filtri label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+.griglia-filtri input,
+.griglia-filtri select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  font-size: 12px;
+}
+
+#filtriForm input[name="codice"] {
+  width: 100%;
+  max-width: 350px;
+}
+/*-- FAST FILTERS --*/
+
+#ff, #btnFiltroIvrea {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s;
+}
+
+#ff:hover, #btnFiltroIvrea:hover {
+  color: #0077cc;
+}
+#tablefilter{
+  margin: 0 auto;
+  border-spacing: 20px; 
+  border-collapse: separate;
+}
+
+#tablefilter input{
+  background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+  }
+
+#tablefilter input:focus {
+    border-color: #66b2ff; /* giallo dorato */
+    outline: none;
+  }
+
+/*--TABELLA VISUALIZZAZIONE--*/
+#tabella {
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  border-radius: 12px;
+  margin: 0 auto;
+}
+
+
+.riga-gialla, .riga-rosa {
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+}
+.riga-gialla {
+  background-color: peachpuff;
+}
+.riga-rosa {
+  background-color:  powderblue;
+}
+
+.riga-gialla td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.riga-gialla td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.riga-rosa td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.riga-rosa td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+#tabella td[id="tdbig"]{
+  font-size: 16px;
+}
+
+.stdinp{
+  width: 6ch;
+  text-align: center;
+  background:none;
+  border: none;
+  font-size: 14px;
+}
+.inputexpo{
+  width: 3ch;
+  text-align: center;
+  background: orange;
+  border:none;
+}
+
+#tabella button{
+  border: none;
+  font-size: 16px;
+  background: none;
+}
+.rigaevid {
+  background-color: gold;
+  overflow: hidden;
+  height: 25px;
+}
+/*--OVERLAY MODIFICA--*/
+.overlay-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 800px;
+}
+#overlayModifica {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.griglia-edit {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.griglia-edit label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.edit-buttons {
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.edit-buttons button {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.full-width {
+  grid-column: span 4;
+}
+
+.full-width input {
+  width: 100%;
+}
+#filtriForm input[name="codice"] {
+  width: 100%;
+  max-width: 350px;
+}
+
+form button {
+  grid-column: span 3;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #005fa3;
+}
