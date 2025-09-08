@@ -208,7 +208,8 @@ async function mostraTabella(docs) {
     html += `<td style="font-size: 12px;">${data.cpu}</td>`;
     html += data["5G"] === "SI" ? `<td>5G&emsp;</td>` : `<td>4G&emsp;</td>`;
     html += `<td id="tdbig"><b>${data.ram}</b>/<b>${data.ssd}&emsp;</b></td>`;
-    html += `<td style="font-size: 12px;">${data.back} MP <br>${data.front} MP</td>`;
+    html += `<td style="font-size: 12px;" class="mpx">${data.back} MP <br>${data.front} MP`;
+    html += `<div class="ottica"><b>${data.ottica}</b></div></td>`;
   
     html += `<td><input name="prezzo" value="${data.prezzo}"></td>`;
     html += `<td ${data.selG === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${pricegar} €</b></td>`;

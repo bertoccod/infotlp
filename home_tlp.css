@@ -76,6 +76,8 @@ body {
 }
 #tablefilter{
   margin: 0 auto;
+  border-spacing: 20px; 
+  border-collapse: separate;
 }
 #tablefilter input{
   background-color: #f0f0f0;
@@ -92,11 +94,10 @@ body {
 /*--TABELLA VISUALIZZAZIONE--*/
 #tabella {
   border-collapse: separate;
-  border-spacing: 0 8px;
+  border-spacing: 0 10px;
   border-radius: 12px;
   margin: 0 auto;
 }
-
 
 .riga-gialla, .riga-rosa {
   text-align: center;
@@ -132,6 +133,36 @@ body {
   font-size: 15px;
 }
 
+#tabella td{
+  padding: 3px;
+}
+.mpx {
+  position: relative;
+  cursor: default;
+}
+.ottica{
+  visibility: hidden;
+    width: 100px;
+    background-color: MediumSeaGreen;
+    color: darkslategrey;
+    text-align: left;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 100;
+    bottom: 25%; /* posizione sopra la cella */
+    left: 50%;
+    transform: translateX(25%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 1em;
+  }
+
+  .mpx:hover .ottica {
+    visibility: visible;
+    opacity: 1;
+}
+
 #tabella input{
   width: 6ch;
   text-align: center;
@@ -144,6 +175,7 @@ body {
   border: none;
   font-size: 16px;
   background: none;
+  cursor: pointer;
 }
 .rigaevid {
   background-color: gold;

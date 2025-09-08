@@ -1,4 +1,3 @@
-
 // 🔧 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDaERrSbbXOpYVcjUIvx_X1HtGi8kFyHCI",
@@ -141,6 +140,7 @@ function inizializzaNotebook(){
 
 // 🎯 Visualizza notebook con filtri
 function visualizzaNotebook(filtri = {}, soloYES = false) {
+
   db.collection("nbk")
     .orderBy("gruppo", "asc")
     .get()
@@ -481,7 +481,13 @@ function delspunte() {
     });
   });
 }
+
+
 function filtraSoloYES() {
+  filtroYesAttivo = !filtroYesAttivo;
+
+  const bottone = document.getElementById("ff");
+  bottone.textContent = filtroYesAttivo ? "🔍 Mostra tutti" : "🗹 Solo Selez.";
   db.collection("nbk").get().then(snapshot => {
     const filtrati = snapshot.docs
       .map(doc => doc.data())
