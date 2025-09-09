@@ -230,6 +230,11 @@ async function mostraTabella(docs) {
     } else {
       html += `<td>-</td>`;
     }
+    if (data.volantino === "SI"){
+      html += `<td style="font-size:17px">&#128226;</td>`;
+    } else {
+      html += `<td>-</td>`;
+    }
     html += `<td><input name="prezzo" value="${data.prezzo}" class="stdinp"></td>`;
     html += `<td>${garanzia.toFixed(2)}</td>`;
     html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
@@ -280,7 +285,7 @@ async function calcolaGaranziaEsatta(marca, prezzoNotebook) {
 //EVIDENZIA RIGA
 function evidenzia(checkbox, idDoc) {
   const riga = checkbox.parentNode.parentNode;
-  const cellaDaEvidenziare = riga.cells[11]; // Cambia l'indice per scegliere la colonna
+  const cellaDaEvidenziare = riga.cells[12]; // Cambia l'indice per scegliere la colonna
 
   const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
 
@@ -474,6 +479,18 @@ function delspunte() {
   db.collection("nbk").get().then(snapshot => {
     const aggiornamenti = snapshot.docs.map(doc => {
       return doc.ref.update({ check: "NO" });
+    });
+
+    Promise.all(aggiornamenti).then(() => {
+      visualizzaNotebook();
+    });
+  });
+}
+
+function delvolantino() {
+  db.collection("nbk").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ volantino: "NO" });
     });
 
     Promise.all(aggiornamenti).then(() => {
