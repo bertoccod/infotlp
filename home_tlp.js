@@ -67,7 +67,7 @@ const campiFiltrabili = [
   "front","back", "webcam"
 ];
 const campiBooleani = [
-  "5G", "dualsim","espandibile", "volantino", "x", "expo"
+  "5G", "dualsim","espandibile", "x", "expo"
 ];
 
 // 🎛️ Campi da metadata
@@ -143,7 +143,7 @@ function visualizzaSmartphone(filtri = {}, soloYES = false) {
         const d = doc.data();
 
         // Campi con confronto diretto (select)
-        for (let campo of ["brand", "gruppo", "ram", "ssd", "dualsim", "espandibile", "volantino", "x", "expo"]) {
+        for (let campo of ["brand", "gruppo", "ram", "ssd", "dualsim", "espandibile", "x", "expo"]) {
           if (filtri[campo] && d[campo] !== filtri[campo]) return false;
         }
 
@@ -210,7 +210,11 @@ async function mostraTabella(docs) {
     html += `<td id="tdbig"><b>${data.ram}</b>/<b>${data.ssd}&emsp;</b></td>`;
     html += `<td style="font-size: 12px;" class="mpx">${data.back} MP <br>${data.front} MP`;
     html += `<div class="ottica"><b>${data.ottica}</b></div></td>`;
-  
+    if (data.x === "SI"){
+      html += `<td>&#10060;</td>`;
+    } else {
+      html += `<td>-</td>`;
+    }
     html += `<td><input name="prezzo" value="${data.prezzo}"></td>`;
     html += `<td ${data.selG === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${pricegar} €</b></td>`;
     html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
@@ -261,10 +265,10 @@ function evidenzia(checkbox, idDoc, col) {
   const riga = checkbox.parentNode.parentNode;
   let cellaDaEvidenziare;
   if (col === 1){
-    cellaDaEvidenziare = riga.cells[9]; // Cambia l'indice per scegliere la colonna
+    cellaDaEvidenziare = riga.cells[10]; // Cambia l'indice per scegliere la colonna
 
   } else {
-    cellaDaEvidenziare = riga.cells[10]; // Cambia l'indice per scegliere la colonna
+    cellaDaEvidenziare = riga.cells[11]; // Cambia l'indice per scegliere la colonna
   }
 
   const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
