@@ -191,6 +191,11 @@ async function mostraTabella(docs) {
     } else {
       html += `<td>-</td>`;
     }
+    if (data.volantino === "SI"){
+      html += `<td style="font-size:17px">&#128226;</td>`;
+    } else {
+      html += `<td>-</td>`;
+    }
     html += `<td><input name="prezzo" value="${data.prezzo}" class="stdinp"></td>`;
     html += `<td>${garanzia.toFixed(2)}</td>`;
     html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
@@ -406,6 +411,18 @@ function delspunte() {
     });
   });
 }
+function delvolantino() {
+  db.collection("tab").get().then(snapshot => {
+    const aggiornamenti = snapshot.docs.map(doc => {
+      return doc.ref.update({ volantino: "NO" });
+    });
+
+    Promise.all(aggiornamenti).then(() => {
+      visualizzaTablet();
+    });
+  });
+}
+
 function filtraSoloYES() {
   db.collection("tab").get().then(snapshot => {
     const filtrati = snapshot.docs
