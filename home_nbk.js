@@ -7,6 +7,7 @@ const firebaseConfig = {
   messagingSenderId: "999879953189",
   appId: "1:999879953189:web:395a6da1e00660be2b68cc"
 };
+
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -25,7 +26,6 @@ auth.onAuthStateChanged(user => {
 });
 
 function inizializzaNotebook(){
-  console.log("🚀 JS caricato e DOM pronto");
   visualizzaNotebook();
   document.getElementById("btnModifica").addEventListener("click", abilitaModifica);
   document.getElementById("btnElimina").addEventListener("click", eliminaRecord);
@@ -45,31 +45,19 @@ function inizializzaNotebook(){
     document.getElementById("sezioneFiltri").style.display = "none";
   });
   document.getElementById("fastfilterinput").addEventListener("input", fastfilter);
-
-
-  // ✅ CLIC ESTERNO CHIUDE MODALE
   document.getElementById("overlayModifica").addEventListener("click", function(e) {
     const contenuto = document.querySelector(".overlay-content");
     if (!contenuto.contains(e.target)) {
       chiudiOverlay();
     }
   });
-  // Popola select campi filtrabili
-  const campiFiltrabili = [
-    "marca", "pollici", "cpu", "gruppo", "gpu", "ram", "ssd",
-    "sistemaoperativo", "webcam"
-  ];
+  const campiFiltrabili = ["marca", "pollici", "cpu", "gruppo", "gpu", "ram", "ssd","sistemaoperativo", "webcam"];
 
-  const campiBooleani = [
-    "evo","game", "touch", "retroilluminazione", "RJ45", "cardReader",
-    "volantino", "expo", "x"
-  ];
+  const campiBooleani = ["evo","game", "touch", "retroilluminazione", "RJ45", "cardReader","volantino", "expo", "x"];
 
-  // 🎛️ Campi da metadata
   campiFiltrabili.forEach(async campo => {
     const snap = await db.collection("metadata_nbk").doc(campo).get();
     const valori = snap.data()?.values || [];
-
     const selectFiltro = document.querySelector(`#filtriForm select[name="${campo}"]`);
     if (selectFiltro) {
       selectFiltro.innerHTML = "";
@@ -84,7 +72,6 @@ function inizializzaNotebook(){
         selectFiltro.appendChild(opt);
       });
     }
-
     if (campo === "cpu") {
       const selectCpu2 = document.querySelector(`#filtriForm select[name="cpu2"]`);
       if (selectCpu2) {
@@ -101,7 +88,6 @@ function inizializzaNotebook(){
         });
       }
     }
-
     const selectModifica = document.querySelector(`#modificaForm select[name="${campo}"]`);
     if (selectModifica) {
       selectModifica.innerHTML = "";
@@ -118,7 +104,6 @@ function inizializzaNotebook(){
     }
   });
 
-  // 🎛️ Campi booleani: SI / NO
   campiBooleani.forEach(campo => {
     const selectModifica = document.querySelector(`#modificaForm select[name="${campo}"]`);
     if (selectModifica) {
@@ -127,7 +112,6 @@ function inizializzaNotebook(){
       blank.value = "";
       blank.textContent = "-- Nessuna selezione --";
       selectModifica.appendChild(blank);
-
       ["SI", "NO"].forEach(val => {
         const opt = document.createElement("option");
         opt.value = val;
@@ -140,7 +124,6 @@ function inizializzaNotebook(){
 
 // 🎯 Visualizza notebook con filtri
 function visualizzaNotebook(filtri = {}, soloYES = false) {
-
   db.collection("nbk")
     .orderBy("gruppo", "asc")
     .get()
@@ -463,40 +446,49 @@ function fastfilter() {
   }
 
 function delsel() {
-  db.collection("nbk").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ sel: "NO"});
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+   if (userConfirmed) {
+    db.collection("nbk").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ sel: "NO"});
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+        visualizzaNotebook(); // ✅ Ora parte al momento giusto
+      });
     });
-
-    Promise.all(aggiornamenti).then(() => {
-      visualizzaNotebook(); // ✅ Ora parte al momento giusto
-    });
-  });
+   }
 }
 
 
 function delspunte() {
-  db.collection("nbk").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ check: "NO" });
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+  if (userConfirmed) {
+    db.collection("nbk").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ check: "NO" });
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+        visualizzaNotebook();
+      });
     });
-
-    Promise.all(aggiornamenti).then(() => {
-      visualizzaNotebook();
-    });
-  });
+  } 
 }
 
 function delvolantino() {
-  db.collection("nbk").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ volantino: "NO" });
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+  if (userConfirmed) {
+    db.collection("nbk").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ volantino: "NO" });
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+        visualizzaNotebook();
+      });
     });
-
-    Promise.all(aggiornamenti).then(() => {
-      visualizzaNotebook();
-    });
-  });
+  }
 }
 
 
