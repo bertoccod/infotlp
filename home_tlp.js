@@ -433,29 +433,36 @@ function ffcpulo() {
 }
 
 function delsel() {
-  db.collection("tlp").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ sel: "NO", selG: "NO" });
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+  if (userConfirmed) {
+    db.collection("tlp").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ sel: "NO", selG: "NO" });
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+        visualizzaSmartphone(); // ✅ Ora parte al momento giusto
+      });
     });
-
-    Promise.all(aggiornamenti).then(() => {
-      visualizzaSmartphone(); // ✅ Ora parte al momento giusto
-    });
-  });
+  }
 }
 
 
 function delspunte() {
-  db.collection("tlp").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ check: "NO" });
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+  if (userConfirmed) {
+    db.collection("tlp").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ check: "NO" });
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+        visualizzaSmartphone();
+      });
     });
-
-    Promise.all(aggiornamenti).then(() => {
-      visualizzaSmartphone();
-    });
-  });
+  }
 }
+
 function filtraSoloYES() {
   db.collection("tlp").get().then(snapshot => {
     const filtrati = snapshot.docs

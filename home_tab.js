@@ -388,39 +388,49 @@ console.log(valoreCodice);
 }
 
 function delsel() {
-  db.collection("tab").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ sel: "NO"});
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+  if (userConfirmed) {
+    db.collection("tab").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ sel: "NO"});
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+        visualizzaTablet();
+      });
     });
-
-    Promise.all(aggiornamenti).then(() => {
-      visualizzaTablet();
-    });
-  });
+  }
 }
 
 
 function delspunte() {
-  db.collection("tab").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ check: "NO" });
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+  if (userConfirmed) {
+    db.collection("tab").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ check: "NO" });
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+          visualizzaTablet();
+      });
     });
-
-    Promise.all(aggiornamenti).then(() => {
-        visualizzaTablet();
-    });
-  });
+  }
 }
-function delvolantino() {
-  db.collection("tab").get().then(snapshot => {
-    const aggiornamenti = snapshot.docs.map(doc => {
-      return doc.ref.update({ volantino: "NO" });
-    });
 
-    Promise.all(aggiornamenti).then(() => {
-      visualizzaTablet();
+function delvolantino() {
+  const userConfirmed = confirm("Sei sicuro di voler procedere?");
+  if (userConfirmed) {
+    db.collection("tab").get().then(snapshot => {
+      const aggiornamenti = snapshot.docs.map(doc => {
+        return doc.ref.update({ volantino: "NO" });
+      });
+  
+      Promise.all(aggiornamenti).then(() => {
+        visualizzaTablet();
+      });
     });
-  });
+  }
 }
 
 function filtraSoloYES() {
