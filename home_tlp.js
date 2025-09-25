@@ -177,7 +177,7 @@ async function mostraTabella(docs) {
     const data = doc.data();
     const prezzo = parseFloat(data.prezzo);
     if (data.marca && prezzo) {
-      return calcolaGaranziaEsatta(data.marca, prezzo);
+      return calcolaGaranziaEsatta(prezzo);
     }
     return Promise.resolve({ garanzia: 0, totale: prezzo + 55 });
   }));
@@ -216,8 +216,8 @@ async function mostraTabella(docs) {
       html += `<td>-</td>`;
     }
     html += `<td><input name="prezzo" value="${data.prezzo}"></td>`;
-    html += `<td ${data.selG === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${pricegar} €</b></td>`;
-    html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
+    html += `<td ${data.selG === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b><span id="pricegar">${pricegar} €</span></b></td>`;
+    html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b><span id="gartie">${totale.toFixed(2)} €</span></b></td>`;
 
     html += `<td><input name="ivrea" value="${data.ivrea}">`;
     html += `<button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
@@ -230,7 +230,7 @@ async function mostraTabella(docs) {
   document.getElementById("tabella").innerHTML = html;
 }
 
-async function calcolaGaranziaEsatta(marca, prezzoSmartphone) {
+async function calcolaGaranziaEsatta(prezzoSmartphone) {
   try {
 
     // 2️⃣ Recupera il documento con ID uguale alla lettera
@@ -392,30 +392,36 @@ function resetFiltri() {
   visualizzaSmartphone();
 }
 
-function aggiornaPrezzo(idDoc, event) {
-  console.log("aggiorna premuto!");
-  const riga = event.target.closest("tr"); // trova la <tr> del bottone cliccato
+async function aggiornaPrezzo(idDoc, event) {
+  const riga = event.target.closest("tr"); 
   const prezzoInput = riga.querySelector('input[name="prezzo"]');
   const ivreaInput = riga.querySelector('input[name="ivrea"]');
 
   const nuovoPrezzo = Number(prezzoInput.value);
   const nuovoIvrea = ivreaInput.value.trim();
-
-  db.collection("tlp").doc(idDoc).update({
+  try {
+    await db.collection("tlp").doc(idDoc).update({
     prezzo: nuovoPrezzo,
     ivrea: nuovoIvrea,
-  }).then(() => {
-    prezzoInput.style.border = "2px solid green";
-    ivreaInput.style.border = "2px solid green";
-
-    setTimeout(() => {
-      prezzoInput.style.border = "";
-      ivreaInput.style.border = "";
-    }, 1500);
-  visualizzaSmartphone();
-  }).catch(err => {
-    alert("⚠️ Errore nell'aggiornamento: " + err.message);
   });
+  
+  prezzoInput.style.border = "2px solid green";
+  ivreaInput.style.border = "2px solid green";
+
+  setTimeout(() => {
+    prezzoInput.style.border = "";
+    ivreaInput.style.border = "";
+  }, 1500);
+  const newgar = await calcolaGaranziaEsatta(nuovoPrezzo);   
+  const tdgar = riga.querySelector('span[id="pricegar"]');
+  const tdtot = riga.querySelector('span[id="gartie"]');
+  const pricegar = Number(nuovoPrezzo)+Number(newgar.garanzia.toFixed(2));
+  tdgar.textContent = `${pricegar.toFixed(2)} €`;
+  tdtot.textContent = `${newgar.totale.toFixed(2)} €`;
+  //visualizzaSmartphone();
+  } catch(err){
+    alert("⚠️ Errore nell'aggiornamento: " + err.message);
+  }
 }
 
 //FILTRO VELOCE

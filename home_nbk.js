@@ -219,12 +219,12 @@ async function mostraTabella(docs) {
       html += `<td>-</td>`;
     }
     html += `<td><input name="prezzo" value="${data.prezzo}" class="stdinp"></td>`;
-    html += `<td>${garanzia.toFixed(2)}</td>`;
-    html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b>${totale.toFixed(2)} €</b></td>`;
+    html += `<td><span id="gar">${garanzia.toFixed(2)}</span></td>`;
+    html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b><span id="tot">${totale.toFixed(2)} €</span></b></td>`;
     const classe = data.expo === "SI" ? "inputexpo" : "stdinp";
     html += `<td><input name="ivrea" value="${data.ivrea}" class="${classe}"></td>`;
     html += `<td><input name="sede" value="${data.sede}" class="stdinp"></td>`;
-    html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event)">✅</button></td>`;
+    html += `<td><button class="updpricebt" onclick="aggiornaPrezzo('${doc.id}', event, '${data.marca}')">✅</button></td>`;
     html += `<td><input type="checkbox" onclick="spuntalo(this, '${doc.id}')" ${data.check === "YES" ? "checked" : ""}></td>`;
     html += `</tr>`;
   }
@@ -381,9 +381,8 @@ function resetFiltri() {
   document.getElementById("sezioneFiltri").style.display = "none";
   visualizzaNotebook();
 }
-function aggiornaPrezzo(idDoc, event) {
-  console.log("aggiorna premuto!");
-  const riga = event.target.closest("tr"); // trova la <tr> del bottone cliccato
+async function aggiornaPrezzo(idDoc, event, marca) {
+  const riga = event.target.closest("tr");
   const prezzoInput = riga.querySelector('input[name="prezzo"]');
   const ivreaInput = riga.querySelector('input[name="ivrea"]');
   const sedeInput = riga.querySelector('input[name="sede"]');
@@ -392,11 +391,13 @@ function aggiornaPrezzo(idDoc, event) {
   const nuovoIvrea = ivreaInput.value.trim();
   const nuovaSede = sedeInput.value.trim();
 
-  db.collection("nbk").doc(idDoc).update({
-    prezzo: nuovoPrezzo,
-    ivrea: nuovoIvrea,
-    sede: nuovaSede
-  }).then(() => {
+  try {
+    await db.collection("nbk").doc(idDoc).update({
+      prezzo: nuovoPrezzo,
+      ivrea: nuovoIvrea,
+      sede: nuovaSede
+    });
+
     prezzoInput.style.border = "2px solid green";
     ivreaInput.style.border = "2px solid green";
     sedeInput.style.border = "2px solid green";
@@ -406,11 +407,20 @@ function aggiornaPrezzo(idDoc, event) {
       ivreaInput.style.border = "";
       sedeInput.style.border = "";
     }, 1500);
-    visualizzaNotebook();
-  }).catch(err => {
-    alert("⚠️ Errore nell'aggiornamento: " + err.message);
-  });
+
+    const newgar = await calcolaGaranziaEsatta(marca, nuovoPrezzo);
+    const tdgar = riga.querySelector('span[id="gar"]');
+    const tdtot = riga.querySelector('span[id="tot"]');
+    tdgar.textContent = newgar.garanzia.toFixed(2);
+    tdtot.textContent = `${newgar.totale.toFixed(2)} €`;
+    // visualizzaNotebook(); // se serve
+
+  } catch (err) {
+    alert("⚠️ Errore nell'aggiornamento o nel calcolo garanzia: " + err.message);
+    console.error(err);
+  }
 }
+
 //FILTRO VELOCE
 function fastfilter() {
   const valoreCodice = document.getElementById("fastfilterinput").value.trim().toLowerCase();
