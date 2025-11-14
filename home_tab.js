@@ -1,4 +1,4 @@
-// 🔧 Firebase config
+﻿// 🔧 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDaERrSbbXOpYVcjUIvx_X1HtGi8kFyHCI",
   authDomain: "infonbk-e6448.firebaseapp.com",
@@ -48,7 +48,7 @@ const campiFiltrabili = [
   "marca", "pollici", "tipo", "ram", "ssd"
 ];
 const campiBooleani = [
-  "volantino", "expo", "x"
+  "penna","volantino", "expo", "x"
 ];
 
 // 🎛️ Campi da metadata
@@ -120,7 +120,7 @@ function visualizzaTablet(filtri = {}, soloYES = false) {
         const d = doc.data();
 
         // Campi con confronto diretto (select)
-        for (let campo of ["marca", "pollici", "ram", "ssd", "volantino", "expo"]) {
+        for (let campo of ["marca", "pollici", "ram", "ssd", "penna","volantino", "expo"]) {
           if (filtri[campo] && d[campo] !== filtri[campo]) return false;
         }
 
@@ -186,6 +186,11 @@ async function mostraTabella(docs) {
     html += `<td ondblclick="apriModifica('${doc.id}')">${data.pollici}"</td>`;
     html += `<td ondblclick="apriModifica('${doc.id}')"><b>${data.tipo}</b></td>`;
     html += `<td id="tdbig" ondblclick="apriModifica('${doc.id}')"><b>${data.ram}/${data.ssd}</b></td>`;
+    if (data.penna === "SI"){
+      html += `<td>&#128395;</td>`;
+    } else {
+      html += `<td>-</td>`;
+    }
     if (data.x === "SI"){
       html += `<td>&#10060;</td>`;
     } else {
@@ -244,7 +249,7 @@ async function calcolaGaranziaEsatta(marca, prezzoTablet) {
 //EVIDENZIA RIGA
   function evidenzia(checkbox, idDoc) {
     const riga = checkbox.parentNode.parentNode;
-    const cellaDaEvidenziare = riga.cells[10]; // Cambia l'indice per scegliere la colonna
+    const cellaDaEvidenziare = riga.cells[11]; // Cambia l'indice per scegliere la colonna
 
     const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
 
