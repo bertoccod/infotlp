@@ -249,7 +249,7 @@ async function calcolaGaranziaEsatta(marca, prezzoTablet) {
 //EVIDENZIA RIGA
   function evidenzia(checkbox, idDoc) {
     const riga = checkbox.parentNode.parentNode;
-    const cellaDaEvidenziare = riga.cells[11]; // Cambia l'indice per scegliere la colonna
+    const cellaDaEvidenziare = riga.cells[12]; // Cambia l'indice per scegliere la colonna
 
     const classeOriginale = cellaDaEvidenziare.getAttribute("data-classe");
 
