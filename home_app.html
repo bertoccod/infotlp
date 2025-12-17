@@ -1,0 +1,1532 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Apple</title>
+  <link rel="stylesheet" href="home_app.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+  <nav class="menu">
+    <ul>
+      <li><a href="home_nbk.html">Notebook</a></li>
+      <li><a href="home_tab.html">Tablet</a></li>
+      <li><a href="home_tlp.html">Smartphone</a></li>
+      <li><a href="home_app.html">Apple</a></li>
+      <li><a href="index.html">🔙 Esci</a></li>
+    </ul>
+  </nav>
+  <table id="tablefilter">
+    <thead>
+      <tr>
+        <th><input id="fastfilterinput" type="text" placeholder="Modello" /></th>
+      </tr>
+    </thead>
+  </table>
+  <table id="ipad"><caption>Pencil</caption>
+    <thead>
+      <tr>
+        <th>GEN.</th>
+        <th>MAGNETICA</th>
+        <th>RIC. WIRELESS</th>
+      </tr>
+    </thead>
+    <tr class="riga-arancio">
+      <td>1a</td>
+      <td>NO</td>
+      <td>NO</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>2a</td>
+      <td>SI</td>
+      <td>SI</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>C</td>
+      <td>SI</td>
+      <td>NO</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>PRO</td>
+      <td>SI</td>
+      <td>SI</td>
+    </tr>
+  </table>
+  <table id="ipad"><caption>iPad</caption>
+    <thead>
+      <tr>
+        <th>NOME</th>
+        <th>GEN.</th>
+        <th>ANNO</th>
+        <th>DISP.</th>
+        <th>CPU</th>
+        <th>MEM.(Gb)</th>
+        <th>PENCIL</th>
+        <th>RICARICA</th>
+        <th>WATT</th>
+        <th>HOME</th>
+        <th>MODELLI</th>
+      </tr>
+    </thead>
+    <tr class="riga-arancio">
+      <td>iPad</td>
+      <td>1</td>
+      <td>2010</td>
+      <td>9.7"</td>
+      <td>A4</td>
+      <td>16/32/64</td>
+      <td>NO</td>
+      <td>Dock 30 pin</td>
+      <td>10</td>
+      <td>SI</td>
+      <td>A1219</td>
+      <td>A1337</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad</td>
+      <td>2</td>
+      <td>2011</td>
+      <td>9.7"</td>
+      <td>A5</td>
+      <td>16/32/64</td>
+      <td>NO</td>
+      <td>Dock 30 pin</td>
+      <td>10</td>
+      <td>SI</td>
+      <td>A1395</td>
+      <td>A1396</td>
+      <td>A1397</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad</td>
+      <td>3</td>
+      <td>2012</td>
+      <td>9.7"</td>
+      <td>A5X</td>
+      <td>16/32/64</td>
+      <td>NO</td>
+      <td>Dock 30 pin</td>
+      <td>10</td>
+      <td>SI</td>
+      <td>A1416</td>
+      <td>A1430</td>
+      <td>A1406</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad</td>
+      <td>4</td>
+      <td>2012</td>
+      <td>9.7"</td>
+      <td>A6X</td>
+      <td>16/32/64/128</td>
+      <td>NO</td>
+      <td>Lightning</td>
+      <td>10</td>
+      <td>SI</td>
+      <td>A1458</td>
+      <td>A1459</td>
+      <td>A1460</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad</td>
+      <td>5</td>
+      <td>2017</td>
+      <td>9.7"</td>
+      <td>A9</td>
+      <td>32/128</td>
+      <td>NO</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A1822</td>
+      <td>A1823</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad</td>
+      <td>6</td>
+      <td>2018</td>
+      <td>9.7"</td>
+      <td>A10 Fus.</td>
+      <td>32/128</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A1893</td>
+      <td>A1954</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad</td>
+      <td>7</td>
+      <td>2019</td>
+      <td>10.2"</td>
+      <td>A10 Fus.</td>
+      <td>32/128</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A2197</td>
+      <td>A2200</td>
+      <td>A2198</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad</td>
+      <td>8</td>
+      <td>2020</td>
+      <td>10.2"</td>
+      <td>A12 Bio.</td>
+      <td>32/128</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>20</td>
+      <td>SI</td>
+      <td>A2270</td>
+      <td>A2428</td>
+      <td>A2429</td>
+      <td>A2430</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad</td>
+      <td>9</td>
+      <td>2021</td>
+      <td>10.2"</td>
+      <td>A13 Bio.</td>
+      <td>64/256</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>20</td>
+      <td>SI</td>
+      <td>A2602</td>
+      <td>A2604</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad</td>
+      <td>10</td>
+      <td>2022</td>
+      <td>10.9"</td>
+      <td>A14 Bio.</td>
+      <td>64/256</td>
+      <td>1a*/C</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2696</td>
+      <td>A2757</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad</td>
+      <td>11</td>
+      <td>2025</td>
+      <td>11"</td>
+      <td>A16</td>
+      <td>128/256/512</td>
+      <td>1a*/C</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A3354</td>
+      <td>A3355</td>
+    </tr>
+  </table>
+  <table id="ipad"><caption>iPad Air</caption>
+    <thead>
+      <tr>
+        <th>NOME</th>
+        <th>GEN.</th>
+        <th>ANNO</th>
+        <th>DISP.</th>
+        <th>CPU</th>
+        <th>MEM.(Gb)</th>
+        <th>PENCIL</th>
+        <th>RICARICA</th>
+        <th>WATT</th>
+        <th>HOME</th>
+        <th>MODELLI</th>
+      </tr>
+    </thead>
+    <tr class="riga-arancio">
+      <td>iPad Air</td>
+      <td>1</td>
+      <td>2013/2014</td>
+      <td>9.7"</td>
+      <td>A7</td>
+      <td>16/32/64/128</td>
+      <td>NO</td>
+      <td>Lightning</td>
+      <td>10</td>
+      <td>SI</td>
+      <td>A1474</td>
+      <td>A1475</td>
+      <td>A1476</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Air</td>
+      <td>2</td>
+      <td>2014</td>
+      <td>9.7"</td>
+      <td>A8X</td>
+      <td>16/32/64/128</td>
+      <td>NO</td>
+      <td>Lightning</td>
+      <td>10</td>
+      <td>SI</td>
+      <td>A1566</td>
+      <td>A1567</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Air</td>
+      <td>3</td>
+      <td>2019</td>
+      <td>10.5"</td>
+      <td>A12 Bio.</td>
+      <td>64/256</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A2152</td>
+      <td>A2123</td>
+      <td>A2153</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Air</td>
+      <td>4</td>
+      <td>2020</td>
+      <td>10.9"</td>
+      <td>A14 Bio.</td>
+      <td>64/256</td>
+      <td>2a/C</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2316</td>
+      <td>A2324</td>
+      <td>A2325</td>
+      <td>A2072</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Air</td>
+      <td>5</td>
+      <td>2022</td>
+      <td>10.9"</td>
+      <td>M1</td>
+      <td>64/256</td>
+      <td>2a/C</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2588</td>
+      <td>A2589</td>
+      <td>A2591</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Air</td>
+      <td>6</td>
+      <td>2024</td>
+      <td>11"</td>
+      <td>M2</td>
+      <td>128/256/512/1000</td>
+      <td>C/Pro</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2902</td>
+      <td>A2903</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Air</td>
+      <td>6</td>
+      <td>2024</td>
+      <td>13"</td>
+      <td>M2</td>
+      <td>128/256/512/1000</td>
+      <td>C/Pro</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2898</td>
+      <td>A2899</td>
+    </tr>    
+    <tr class="riga-azzurra">
+      <td>iPad Air</td>
+      <td>7</td>
+      <td>2025</td>
+      <td>11"</td>
+      <td>M3</td>
+      <td>128/256/512/1000</td>
+      <td>C/Pro</td>
+      <td>USB-C</td>
+      <td>45</td>
+      <td>NO</td>
+      <td>A3266</td>
+      <td>A3267</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Air</td>
+      <td>7</td>
+      <td>2025</td>
+      <td>13"</td>
+      <td>M3</td>
+      <td>128/256/512/1000</td>
+      <td>C/Pro</td>
+      <td>USB-C</td>
+      <td>45</td>
+      <td>NO</td>
+      <td>A3268</td>
+      <td>A3269</td>
+    </tr>
+  </table>
+  <table id="ipad"><caption>iPad Pro</caption>
+    <thead>
+      <tr>
+        <th>NOME</th>
+        <th>GEN.</th>
+        <th>ANNO</th>
+        <th>DISP.</th>
+        <th>CPU</th>
+        <th>MEM.(Gb)</th>
+        <th>PENCIL</th>
+        <th>RICARICA</th>
+        <th>WATT</th>
+        <th>HOME</th>
+        <th>MODELLI</th>
+      </tr>
+    </thead>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>1</td>
+      <td>2015</td>
+      <td>12.9"</td>
+      <td>A9X</td>
+      <td>32/128/256</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A1584</td>
+      <td>A1652</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>1</td>
+      <td>2016</td>
+      <td>9.7"</td>
+      <td>A9X</td>
+      <td>32/128/256</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A1673</td>
+      <td>A1674</td>
+      <td>A1675</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>2</td>
+      <td>2017</td>
+      <td>10.5"</td>
+      <td>A10X Fus.</td>
+      <td>64/256/512</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A1701</td>
+      <td>A1709</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>1</td>
+      <td>2017</td>
+      <td>12.9"</td>
+      <td>A10X Fus.</td>
+      <td>64/256/512</td>
+      <td>1a</td>
+      <td>Lightning</td>
+      <td>12</td>
+      <td>SI</td>
+      <td>A1670</td>
+      <td>A1671</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>3</td>
+      <td>2018</td>
+      <td>11"</td>
+      <td>A12X</td>
+      <td>64/256/512</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>18</td>
+      <td>NO</td>
+      <td>A1980</td>
+      <td>A2013</td>
+      <td>A1934</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>3</td>
+      <td>2018</td>
+      <td>12.9"</td>
+      <td>A12X</td>
+      <td>64/256/512/1000</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>18</td>
+      <td>NO</td>
+      <td>A1876</td>
+      <td>A2014</td>
+      <td>A1895</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>4</td>
+      <td>2020</td>
+      <td>11"</td>
+      <td>A12Z</td>
+      <td>128/256/512/1000</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>18</td>
+      <td>NO</td>
+      <td>A2228</td>
+      <td>A2068</td>
+      <td>A2230</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>4</td>
+      <td>2020</td>
+      <td>12.9"</td>
+      <td>A12Z</td>
+      <td>128/256/512/1000</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>18</td>
+      <td>NO</td>
+      <td>A2229</td>
+      <td>A2069</td>
+      <td>A2232</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>5</td>
+      <td>2021</td>
+      <td>11"</td>
+      <td>M1</td>
+      <td>128/256/512/1000/2000</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>18</td>
+      <td>NO</td>
+      <td>A2377</td>
+      <td>A2459</td>
+      <td>A2301</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>5</td>
+      <td>2021</td>
+      <td>12.9"</td>
+      <td>M1</td>
+      <td>128/256/512/1000/2000</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2378</td>
+      <td>A2461</td>
+      <td>A2379</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>6</td>
+      <td>2022</td>
+      <td>11"</td>
+      <td>M2</td>
+      <td>128/256/512/1000/2000</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>18</td>
+      <td>NO</td>
+      <td>A2759</td>
+      <td>A2761</td>
+      <td>A2435</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>6</td>
+      <td>2022</td>
+      <td>12.9"</td>
+      <td>M2</td>
+      <td>128/256/512/1000/2000</td>
+      <td>2a</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2436</td>
+      <td>A2437</td>
+      <td>A2764</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>7</td>
+      <td>2024</td>
+      <td>11"</td>
+      <td>M4</td>
+      <td>256/512/1000/2000</td>
+      <td>2a-PRO</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2836</td>
+      <td>A2837</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>7</td>
+      <td>2024</td>
+      <td>13"</td>
+      <td>M4</td>
+      <td>256/512/1000/2000</td>
+      <td>2a-PRO</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A2925</td>
+      <td>A2926</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>iPad Pro</td>
+      <td>8</td>
+      <td>2025</td>
+      <td>11"</td>
+      <td>M5</td>
+      <td>256/512/1000/2000</td>
+      <td>2a-PRO</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A3357</td>
+      <td>A3358</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>iPad Pro</td>
+      <td>8</td>
+      <td>2025</td>
+      <td>13"</td>
+      <td>M5</td>
+      <td>256/512/1000/2000</td>
+      <td>2a-PRO</td>
+      <td>USB-C</td>
+      <td>20</td>
+      <td>NO</td>
+      <td>A3360</td>
+      <td>A3361</td>
+    </tr>
+  </table>
+  <table id="ipad"><caption>Macbook Air</caption>
+    <thead>
+      <tr>
+        <th>MODELLO</th>
+        <th>ANNO</th>
+        <th>DISP.</th>
+        <th>CPU</th>
+        <th>RICARICA</th>
+        <th>WATT</th>
+        <th>MODELLI</th>
+      </tr>
+    </thead>
+    <tr class="riga-arancio">
+      <td>2,1</td>
+      <td>2009</td>
+      <td>13.3"</td>
+      <td>Core 2 Duo</td>
+      <td>Magsafe</td>
+      <td>--</td>
+      <td>MC505xx/A</td>
+      <td>MC233xx/A</td>
+      <td>MC234xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>3,1</td>
+      <td>2010</td>
+      <td>11"</td>
+      <td>Core 2 Duo</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MC505xx/A</td>
+      <td>MC506xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>3,2</td>
+      <td>2010</td>
+      <td>13"</td>
+      <td>Core 2 Duo</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MC503xx/A</td>
+      <td>MC504xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>4,1</td>
+      <td>2011</td>
+      <td>11"</td>
+      <td>i5/i7 2a</td>
+      <td>--</td>
+      <td>45W</td>
+      <td>MC968xx/A</td>
+      <td>MC969xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>4,2</td>
+      <td>2011</td>
+      <td>13"</td>
+      <td>i5/i7 2a</td>
+      <td>--</td>
+      <td>45W</td>
+      <td>MC965xx/A</td>
+      <td>MC966xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>5,1</td>
+      <td>2012</td>
+      <td>11"</td>
+      <td>i5/i7 3a</td>
+      <td>Magsafe2</td>
+      <td>--</td>
+      <td>MD223xx/A</td>
+      <td>MD224xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>5,2</td>
+      <td>2012</td>
+      <td>13"</td>
+      <td>i5/i7 3a</td>
+      <td>Magsafe2</td>
+      <td>--</td>
+      <td>MD231xx/A</td>
+      <td>MD232xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>6,1</td>
+      <td>2013</td>
+      <td>11"</td>
+      <td>i5/i7 4a</td>
+      <td>Magsafe2</td>
+      <td>--</td>
+      <td>MD711xx/A</td>
+      <td>MD712xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>6,2</td>
+      <td>2013</td>
+      <td>13"</td>
+      <td>i5/i7 4a</td>
+      <td>Magsafe2</td>
+      <td>--</td>
+      <td>MD760xx/A</td>
+      <td>MD761xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>7,1</td>
+      <td>2015</td>
+      <td>11"</td>
+      <td>i5 8a</td>
+      <td>Magsafe2</td>
+      <td>--</td>
+      <td>MJVM2xx/A</td>
+      <td>MJVP2xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>7,2</td>
+      <td>2015</td>
+      <td>13"</td>
+      <td>i5/i7 8a</td>
+      <td>Magsafe2</td>
+      <td>--</td>
+      <td>MJVE2xx/A</td>
+      <td>MJVG2xx/A</td>
+      <td>MMGF2xx/A</td>
+      <td>MMGG2xx/A</td>
+    </tr>
+   <tr class="riga-azzurra">
+      <td>7,2</td>
+      <td>2017</td>
+      <td>13"</td>
+      <td>i5/i7 8a</td>
+      <td>Magsafe2</td>
+      <td>--</td>
+      <td>MQD32xx/A</td>
+      <td>MQD42xx/A</td>
+      <td>MQD52xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>8,1</td>
+      <td>2018</td>
+      <td>13"</td>
+      <td>i5 8a</td>
+      <td>USB-C</td>
+      <td>30</td>
+      <td>MRE82xx/A</td>
+      <td>MREA2xx/A</td>
+      <td>MREE2xx/A</td>
+      <td>MRE92xx/A</td>
+      <td>MREC2xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MREF2xx/A</td>
+      <td>MUQT2xx/A</td>
+      <td>MUQU2xx/A</td>
+      <td>MUQV2xx/A</td>
+      <td>MVFH2xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>8,2</td>
+      <td>2019</td>
+      <td>13"</td>
+      <td>i5 8a</td>
+      <td>USB-C</td>
+      <td>30</td>
+      <td>MVFJ2xx/A</td>
+      <td>MVFK2xx/A</td>
+      <td>MVFL2xx/A</td>
+      <td>MVFM2xx/A</td>
+      <td>MVFN2xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MVH62xx/A</td>
+      <td>MVH82xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>9,1</td>
+      <td>2020</td>
+      <td>13"</td>
+      <td>i3/i5/i7 10a</td>
+      <td>USB-C</td>
+      <td>30</td>
+      <td>MVH22xx/A</td>
+      <td>MVH42xx/A</td>
+      <td>MVH52xx/A</td>
+      <td>MWTJ2xx/A</td>
+      <td>MWTK2xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MWTL2xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>10,1</td>
+      <td>2020</td>
+      <td>13.3"</td>
+      <td>M1</td>
+      <td>USB-C</td>
+      <td>30</td>
+      <td>MGN63xx/A</td>
+      <td>MGN93xx/A</td>
+      <td>MGND3xx/A</td>
+      <td>MGN73xx/A</td>
+      <td>MGNA3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MGNE3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>14,2</td>
+      <td>2022</td>
+      <td>13.3"</td>
+      <td>M2</td>
+      <td>Magsafe3/USB-C</td>
+      <td>30/70</td>
+      <td>MLXW3xx/A</td>
+      <td>MLXX3xx/A</td>
+      <td>MLXY3xx/A</td>
+      <td>MLY03xx/A</td>
+      <td>MLY13xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MLY23xx/A</td>
+      <td>MLY33xx/A</td>
+      <td>MLY43xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>14,15</td>
+      <td>2023</td>
+      <td>15"</td>
+      <td>M2</td>
+      <td>Magsafe3/USB-C</td>
+      <td>30/70</td>
+      <td>MQKP3xx/A</td>
+      <td>MQKQ3xx/A</td>
+      <td>MQKR3xx/A</td>
+      <td>MQKT3xx/A</td>
+      <td>MQKU3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MQKV3xx/A</td>
+      <td>MQKW3xx/A</td>
+      <td>MQKX3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>15,12</td>
+      <td>2024</td>
+      <td>13.3"</td>
+      <td>M3</td>
+      <td>Magsafe3/USB-C</td>
+      <td>30/70</td>
+      <td>MRXN3xx/A</td>
+      <td>MRXQ3xx/A</td>
+      <td>MRXT3xx/A</td>
+      <td>MRXV3xx/A</td>
+      <td>MRXP3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MRXR3xx/A</td>
+      <td>MRXU3xx/A</td>
+      <td>MRXW3xx/A</td>
+      <td>MXCR3xx/A</td>
+      <td>MXCT3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MXCU3xx/A</td>
+      <td>MXCV3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>15,13</td>
+      <td>2024</td>
+      <td>15"</td>
+      <td>M3</td>
+      <td>Magsafe3/USB-C</td>
+      <td>30/70</td>
+      <td>MRYM3xx/A</td>
+      <td>MRYP3xx/A</td>
+      <td>MRYR3xx/A</td>
+      <td>MRYU3xx/A</td>
+      <td>MRYN3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MRYQ3xx/A</td>
+      <td>MRYT3xx/A</td>
+      <td>MRYV3xx/A</td>
+      <td>MXD13xx/A</td>
+      <td>MXD23xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MXD33xx/A</td>
+      <td>MXD43xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>16,12</td>
+      <td>2025</td>
+      <td>13.3"</td>
+      <td>M4</td>
+      <td>Magsafe3/USB-C</td>
+      <td>30/70</td>
+      <td>MC654xx/A</td>
+      <td>MC6A4xx/A</td>
+      <td>MC6C4xx/A</td>
+      <td>MC6T4xx/A</td>
+      <td>MC6U4xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MC6V4xx/A</td>
+      <td>MDG24xx/A</td>
+      <td>MDG54xx/A</td>
+      <td>MDG64xx/A</td>
+      <td>MW0W3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MW0X3xx/A</td>
+      <td>MW0Y3xx/A</td>
+      <td>MW103xx/A</td>
+      <td>MW123xx/A</td>
+      <td>MW133xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>16,13</td>
+      <td>2025</td>
+      <td>15"</td>
+      <td>M4</td>
+      <td>Magsafe3/USB-C</td>
+      <td>30/70</td>
+      <td>MC6J4xx/A</td>
+      <td>MC6K4xx/A</td>
+      <td>MC6L4xx/A</td>
+      <td>MC7A4xx/A</td>
+      <td>MC7C4xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MC7D4xx/A</td>
+      <td>MDG34xx/A</td>
+      <td>MDG84xx/A</td>
+      <td>MDG94xx/A</td>
+      <td>MW1G3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MW1H3xx/A</td>
+      <td>MW1J3xx/A</td>
+      <td>MW1K3xx/A</td>
+      <td>MW1L3xx/A</td>
+      <td>MW1M3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MW1M3xx/A</td>
+    </tr>
+  </table>
+  <table id="ipad"><caption>Macbook Pro</caption>
+    <thead>
+      <tr>
+        <th>MODELLO</th>
+        <th>ANNO</th>
+        <th>DISP.</th>
+        <th>CPU</th>
+        <th>RICARICA</th>
+        <th>WATT</th>
+        <th>MODELLI</th>
+      </tr>
+    </thead>
+    <tr class="riga-arancio">
+      <td>15,2</td>
+      <td>2018</td>
+      <td>13"</td>
+      <td>i5</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MR9Q2xx/A</td>
+      <td>MR9R2xx/A</td>
+      <td>MR9T2xx/A</td>
+      <td>MR9U2xx/A</td>
+      <td>MR9V2xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>15,1</td>
+      <td>2018</td>
+      <td>15"</td>
+      <td>i7</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MR932xx/A</td>
+      <td>MR942xx/A</td>
+      <td>MR952xx/A</td>
+      <td>MR962xx/A</td>
+      <td>MR972xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MUQH2xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>15,2</td>
+      <td>2019</td>
+      <td>13"</td>
+      <td>i5</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MV962xx/A</td>
+      <td>MV972xx/A</td>
+      <td>MV982xx/A</td>
+      <td>MV992xx/A</td>
+      <td>MV9A2xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>15,1/15,3</td>
+      <td>2019</td>
+      <td>15"</td>
+      <td>i7</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MV902xx/A</td>
+      <td>MV912xx/A</td>
+      <td>MV922xx/A</td>
+      <td>MV932xx/A</td>
+      <td>MV942xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MV952xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>15,4</td>
+      <td>2019</td>
+      <td>13"</td>
+      <td>i5</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MUHN2xx/A</td>
+      <td>MUHP2xx/a</td>
+      <td>MUHQ2xx/A</td>
+      <td>MUHR2xx/A</td>
+      <td>MUHR2xx/B</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>16,1/16,4</td>
+      <td>2019</td>
+      <td>16"</td>
+      <td>i7/i9</td>
+      <td>USB-C</td>
+      <td>96W</td>
+      <td>MVVJ2xx/A</td>
+      <td>MVVK2xx/A</td>
+      <td>MVVL2xx/A</td>
+      <td>MVVM2xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>16,2</td>
+      <td>2020</td>
+      <td>13"</td>
+      <td>i5</td>
+      <td>USB-C</td>
+      <td>60W</td>
+      <td>MWP42xx/A</td>
+      <td>MWP52xx/A</td>
+      <td>MWP62xx/A</td>
+      <td>MWP72xx/A</td>
+      <td>MWP82xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>16,3</td>
+      <td>2020</td>
+      <td>13"</td>
+      <td>i5</td>
+      <td>USB-C</td>
+      <td>60W</td>
+      <td>MXK32xx/A</td>
+      <td>MXK52xx/A</td>
+      <td>MXK62xx/A</td>
+      <td>MXK72xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>17,1</td>
+      <td>2020</td>
+      <td>13"</td>
+      <td>M1</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MYD83xx/A</td>
+      <td>MYD92xx/A</td>
+      <td>MYDA2xx/A</td>
+      <td>MYDC2xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>18,1/18,2</td>
+      <td>2021</td>
+      <td>16"</td>
+      <td>M1 Pro - M1 Max</td>
+      <td>Magsafe3 - USB-C</td>
+      <td>70W</td>
+      <td>MK183xx/A</td>
+      <td>MK193xx/A</td>
+      <td>MK1A3xx/A</td>
+      <td>MK1E3xx/A</td>
+      <td>MK1F3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MK1H3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>18,3/18,4</td>
+      <td>2021</td>
+      <td>14"</td>
+      <td>M1 Pro - M1 Max</td>
+      <td>Magsafe3 - USB-C</td>
+      <td>100W</td>
+      <td>MKGP3xx/A</td>
+      <td>MKGQ3xx/A</td>
+      <td>MKGR3xx/A</td>
+      <td>MKGT3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>Mac14,7</td>
+      <td>2022</td>
+      <td>13"</td>
+      <td>M2</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MNEH3xx/A</td>
+      <td>MNEJ3xx/A</td>
+      <td>MNEP3xx/A</td>
+      <td>MNEQ3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>Mac14,6/14,10</td>
+      <td>2023</td>
+      <td>16"</td>
+      <td>M2 Pro - M2 Max</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MNWG3xx/A</td>
+      <td>MNW93xx/A</td>
+      <td>MNWK3xx/A</td>
+      <td>MNWD3xx/A</td>
+      <td>MNWF3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MNW83xx/A</td>
+      <td>MNWJ3xx/A</td>
+      <td>MNWC3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>Mac14,5/14,9</td>
+      <td>2023</td>
+      <td>14"</td>
+      <td>M2 Pro - M2 Max</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MPHE3xx/A</td>
+      <td>MPHF3xx/A</td>
+      <td>MPHG3xx/A</td>
+      <td>MPHH3xx/A</td>
+      <td>MPHJ3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MPHK3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>Mac15,7/15,9/15,11</td>
+      <td>2023</td>
+      <td>16"</td>
+      <td>M3 Pro - M3 Max</td>
+      <td>--</td>
+      <td>--</td>
+      <td>FRW13xx/A</td>
+      <td>FRW23xx/A</td>
+      <td>FRW33xx/A</td>
+      <td>FRW43xx/A</td>
+      <td>FRW63xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>FRW73xx/A</td>
+      <td>FUW63xx/A</td>
+      <td>FUW73xx/A</td>
+      <td>MRW13xx/A</td>
+      <td>MRW23xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MRW33xx/A</td>
+      <td>MRW43xx/A</td>
+      <td>MRW63xx/A</td>
+      <td>MRW73xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>Mac15,6/15,8/15,10</td>
+      <td>2023</td>
+      <td>14"</td>
+      <td>M3 Pro - M3 Max</td>
+      <td>--</td>
+      <td>--</td>
+      <td>FRX33xx/A</td>
+      <td>FRX43xx/A</td>
+      <td>FRX54xx/A</td>
+      <td>FRX63xx/A</td>
+      <td>FRX73xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>FRX83xx/A</td>
+      <td>MRX33xx/A</td>
+      <td>MRX43xx/A</td>
+      <td>MRX53xx/A</td>
+      <td>MRX63xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MRX73xx/A</td>
+      <td>MRX83xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>Mac15,3</td>
+      <td>2023</td>
+      <td>14"</td>
+      <td>M3</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MR7J3xx/A</td>
+      <td>MR7K3xx/A</td>
+      <td>MRX23xx/A</td>
+      <td>MTL73xx/A</td>
+      <td>MTL83xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MTLC3xx/A</td>
+      <td>MXE03xx/A</td>
+      <td>MXE13xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>Mac16,7/16,5</td>
+      <td>2024</td>
+      <td>16"</td>
+      <td>M4 Pro - M4 Max</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MX2T3xx/A</td>
+      <td>MX2U3xx/A</td>
+      <td>MX2V3xx/A</td>
+      <td>MX2W3xx/A</td>
+      <td>MX2X3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MX2Y3xx/A</td>
+      <td>MX303xx/A</td>
+      <td>MX313xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>Mac16,6/16,8</td>
+      <td>2024</td>
+      <td>14"</td>
+      <td>M4 Pro - M4 Max</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MXE63xx/A</td>
+      <td>MX2E3xx/A</td>
+      <td>MX2F3xx/A</td>
+      <td>MX2G3xx/A</td>
+      <td>MX2H3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MX2J3xx/A</td>
+      <td>MX2K3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td>Mac16,1</td>
+      <td>2024</td>
+      <td>14"</td>
+      <td>M4</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MCX04xx/A</td>
+      <td>MCX14xx/A</td>
+      <td>MW2U3xx/A</td>
+      <td>MW2V3xx/A</td>
+      <td>MW2W3xx/A</td>
+    </tr>
+    <tr class="riga-azzurra">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MW2X3xx/A</td>
+      <td>MXCM3xx/A</td>
+      <td>MXCN3xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td>Mac17,2</td>
+      <td>2025</td>
+      <td>14"</td>
+      <td>M5</td>
+      <td>--</td>
+      <td>--</td>
+      <td>MDE04xx/A</td>
+      <td>MDE14xx/A</td>
+      <td>MDE34xx/A</td>
+      <td>MDE44xx/A</td>
+      <td>MDE54xx/A</td>
+    </tr>
+    <tr class="riga-arancio">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>MDE64xx/A</td>
+    </tr>
+  </table>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const input = document.getElementById("fastfilterinput");
+  const tables = document.querySelectorAll("table#ipad");
+
+  input.addEventListener("keyup", function() {
+    const filter = input.value.toLowerCase();
+
+    tables.forEach(table => {
+      const rows = table.querySelectorAll("tbody tr");
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        let rowText = row.textContent.toLowerCase();
+        if (rowText.indexOf(filter) > -1) {
+          row.style.display = "";
+          visibleCount++;
+        } else {
+          row.style.display = "none";
+        }
+      });
+
+      // Se nessuna riga è visibile → nascondo caption e thead
+      if (visibleCount === 0) {
+        table.style.display = "none";
+      } else {
+        table.style.display = "table";
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

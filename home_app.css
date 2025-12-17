@@ -1,0 +1,95 @@
+/* --- BASE --- */
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+/* --- MENU --- */
+.menu {
+  background-color: #ffffff;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.menu li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s;
+}
+.menu li a:hover {
+  color: #0077cc;
+}
+
+/* --- FAST FILTER --- */
+#tablefilter {
+  margin: 20px auto;
+  border-spacing: 10px;
+}
+#fastfilterinput {
+  padding: 8px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  transition: border-color 0.3s ease;
+}
+#fastfilterinput:focus {
+  border-color: #66b2ff;
+  outline: none;
+}
+
+/* --- TABELLE COMPATTE --- */
+table#ipad {
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  margin: 20px auto;
+  width: auto;              /* compatta, si adatta al contenuto */
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  table-layout: auto;       /* lascia che le colonne seguano il contenuto */
+}
+
+table#ipad caption {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #0077cc;
+}
+
+table#ipad th {
+  background-color: #e6f2ff;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-bottom: 2px solid #ccc;
+  white-space: nowrap;      /* evita che il testo vada a capo */
+}
+
+table#ipad td {
+  padding: 4px 8px;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;      /* compatta le celle */
+}
+
+/* --- RIGHE ALTERNATE --- */
+.riga-arancio { background-color: peachpuff; }
+.riga-azzurra { background-color: powderblue; }
+
+
+/* --- CELLE SPECIALI --- */
+table#ipad td:first-child {
+  font-weight: bold;
+  color: #333;
+}
+
+
