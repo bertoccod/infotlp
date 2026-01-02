@@ -1,4 +1,4 @@
-// 🔧 Firebase config
+﻿// 🔧 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDaERrSbbXOpYVcjUIvx_X1HtGi8kFyHCI",
   authDomain: "infonbk-e6448.firebaseapp.com",
@@ -218,6 +218,7 @@ async function mostraTabella(docs) {
     } else {
       html += `<td>-</td>`;
     }
+    html += `<td style="font-size:11px">${data.location}</td>`;
     html += `<td><input name="prezzo" value="${data.prezzo}" class="stdinp"></td>`;
     html += `<td><span id="gar">${garanzia.toFixed(2)}</span></td>`;
     html += `<td ${data.sel === "YES" ? ' class="rigaevid"' : ""} id="tdbig"><b><span id="tot">${totale.toFixed(2)} €</span></b></td>`;
